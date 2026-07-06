@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CycladesAI — COS | Votre plugin de prospection sur mesure</title>
+<meta name="description" content="COS (Claude Operating System) fabrique un plugin Claude Code de prospection taillé pour votre niche : prospection, cold email, pitch, livrable, relances. Prix fixe 1 000 €, sans appel.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Red+Hat+Mono:wght@400;500&display=swap">
+<style>
+/*
+ * ═══════════════════════════════════════════════════════════
+ * DESIGN TRANSPLANT — CycladesAI / COS
+ * Design source  : microsoft.ai (éditorial, crème chaude, serif
+ *   géant → Newsreader, Red Hat Mono en labels minuscules, pilules
+ *   r=28/999, rangées éditoriales aérées, cartes crème, vignettes).
+ * Contenu source : offre COS (Claude Operating System) — plugin
+ *   Claude Code de prospection sur mesure, prix fixe 1 000 €, sans
+ *   appel. L'angle est le résultat de prospection, pas le canal.
+ * Accent brand   : orange #D97757 (brand-guidelines Claude).
+ * Animations : calmes et justifiées — fade-up doux à l'entrée,
+ *   séquence de chat (le produit parle), compteurs décélérés,
+ *   condensation de l'acronyme C·O·S au scroll.
+ * ═══════════════════════════════════════════════════════════
+ */
+:root{
+  --cream:#FEF9ED;
+  --cream-2:#F7ECD9;
+  --cream-3:#FBF0DC;
+  --ink:#141413;
+  --brown:#5D524B;
+  --mid:#B0AEA5;
+  --orange:#D97757;
+  --orange-deep:#C4623F;
+  --orange-tint:#F6E3D7;
+  --r-card:28px;
+  --r-pill:999px;
+  --ease:cubic-bezier(.25,.8,.25,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--brown);
+  font-family:'Newsreader',Georgia,serif;
+  font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'Red Hat Mono',monospace}
+.container{max-width:1140px;margin:0 auto;padding:0 28px}
+::selection{background:var(--orange);color:var(--cream)}
+
+h1,h2,h3{font-weight:450;color:var(--ink);letter-spacing:-.03em}
+
+/* ---------- Labels mono (minuscules, espacés) ---------- */
+.kicker{
+  display:none!important;
+}
+
+/* ---------- Boutons pilule ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:48px;padding:0 30px;border-radius:var(--r-pill);border:none;cursor:pointer;
+  font-family:'Red Hat Mono',monospace;font-size:.8rem;letter-spacing:.02em;
+  transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s;
+  touch-action:manipulation;
+}
+.btn-orange{background:var(--orange);color:var(--cream)}
+.btn-orange:hover{background:var(--orange-deep);box-shadow:0 8px 30px rgba(217,119,87,.35)}
+.btn-soft{background:var(--cream-2);color:var(--brown)}
+.btn-soft:hover{background:#F0E2C9}
+.btn-dark{background:var(--ink);color:var(--cream)}
+.btn-dark:hover{background:#2a2a28}
+.btn-line{background:transparent;color:var(--cream);border:1px solid rgba(254,249,237,.4)}
+.btn-line:hover{border-color:var(--orange);color:var(--orange)}
+.btn:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.btn .arr{transition:transform .25s var(--ease)}
+.btn:hover .arr{transform:translateX(4px)}
+
+/* ---------- Nav ---------- */
+header{position:fixed;top:14px;left:0;right:0;z-index:100}
+.nav{
+  display:flex;align-items:center;gap:30px;
+  max-width:1140px;margin:0 auto;padding:14px 22px;
+  background:rgba(254,249,237,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-radius:16px;box-shadow:0 4px 40px rgba(93,82,75,.12);
+  width:calc(100% - 36px);
+}
+.nav .logo{font-family:'Newsreader',serif;font-weight:500;font-size:1.25rem;color:var(--ink);letter-spacing:-.02em}
+.nav .logo i{color:var(--orange);font-style:normal}
+.nav nav{display:flex;gap:24px;font-family:'Red Hat Mono',monospace;font-size:.8rem}
+.nav nav a{transition:color .2s}
+.nav nav a:hover{color:var(--orange)}
+.nav .spacer{flex:1}
+.nav .cta{font-family:'Red Hat Mono',monospace;font-size:.8rem;display:inline-flex;align-items:center;gap:8px;color:var(--ink)}
+.nav .cta:hover{color:var(--orange)}
+@media(max-width:760px){
+  .nav{flex-wrap:wrap;gap:10px 14px;padding:12px 16px}
+  .nav nav{order:3;width:100%;justify-content:space-between;gap:10px;font-size:.72rem}
+  .nav .cta{font-size:.72rem}
+}
+
+/* ---------- Hero (sombre chaud, serif crème géant) ---------- */
+.hero{
+  position:relative;min-height:96svh;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:
+    radial-gradient(90% 60% at 50% 110%, rgba(217,119,87,.28) 0%, transparent 60%),
+    radial-gradient(120% 80% at 50% -20%, #2E2A26 0%, var(--ink) 60%);
+  color:var(--cream);overflow:hidden;padding:140px 0 110px;
+}
+.hero .glowline{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(720px,90%);height:1px;
+  background:linear-gradient(90deg,transparent,rgba(217,119,87,.7),transparent)}
+.hero .kicker{color:var(--mid)}
+.hero .kicker::before{background:var(--orange)}
+.hero h1{
+  color:var(--cream);font-size:clamp(3rem,8.4vw,6.6rem);font-weight:450;line-height:1.02;letter-spacing:-.04em;
+  max-width:15ch;margin:0 auto 30px;
+}
+.hero h1 .w{display:inline-block;opacity:0;transform:translateY(16px)}
+.hero h1 em{font-style:italic;color:var(--orange)}
+.hero .sub{
+  font-size:clamp(1.02rem,1.7vw,1.22rem);color:rgba(254,249,237,.72);max-width:54ch;margin:0 auto 42px;
+}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:60px}
+.hero .meta{
+  font-family:'Red Hat Mono',monospace;font-size:.72rem;letter-spacing:.04em;color:rgba(254,249,237,.45);
+  display:flex;gap:26px;justify-content:center;flex-wrap:wrap;
+}
+
+/* ---------- Chiffres ---------- */
+.stats{padding:110px 0 90px;background:var(--cream)}
+.stats .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.stat{
+  background:var(--cream-3);border-radius:var(--r-card);padding:38px 30px;text-align:center;
+  transition:transform .3s var(--ease),box-shadow .3s;
+}
+.stat:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(93,82,75,.14)}
+.stat .big{font-family:'Newsreader',serif;font-size:clamp(2.4rem,4vw,3.4rem);font-weight:450;color:var(--ink);letter-spacing:-.03em}
+.stat .big sup{font-size:.4em;color:var(--orange)}
+.stat .lbl{font-family:'Red Hat Mono',monospace;font-size:.72rem;letter-spacing:.04em;color:var(--brown);margin-top:10px}
+@media(max-width:860px){.stats .grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.stats .grid{grid-template-columns:1fr}}
+
+/* ---------- Manifeste (serif italique, calme) ---------- */
+.manifesto{padding:90px 0 130px;background:var(--cream);text-align:center}
+.manifesto p{
+  font-size:clamp(1.7rem,4.2vw,2.9rem);font-weight:450;line-height:1.25;letter-spacing:-.02em;
+  color:var(--ink);max-width:26ch;margin:0 auto;
+}
+.manifesto em{font-style:italic;color:var(--orange)}
+
+/* ---------- Démo (carte crème sur fond sombre chaud) ---------- */
+.demo{position:relative;background:linear-gradient(180deg,#1B1916,var(--ink));color:var(--cream)}
+.demo .demo-track{height:185vh;position:relative}
+.demo .demo-stage{position:sticky;top:0;min-height:100svh;display:flex;align-items:center;padding:110px 0}
+.demo .demo-stage .container{width:100%}
+.demo .head{text-align:center;margin-bottom:56px}
+.demo .kicker{color:var(--mid);justify-content:center;display:flex}
+.demo h2{color:var(--cream);font-size:clamp(2rem,4.6vw,3.4rem);margin-bottom:14px}
+.demo .head p{color:rgba(254,249,237,.65);max-width:46ch;margin:0 auto}
+.panel{
+  background:var(--cream);color:var(--brown);border-radius:var(--r-card);max-width:860px;margin:0 auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;
+}
+.panel .bar{
+  display:flex;align-items:center;gap:10px;padding:16px 24px;border-bottom:1px solid var(--cream-2);
+  font-family:'Red Hat Mono',monospace;font-size:.72rem;color:var(--brown);
+}
+.panel .bar i{width:9px;height:9px;border-radius:50%;background:var(--orange);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+.panel .body{padding:30px;display:grid;gap:16px;min-height:330px;align-content:start;background:var(--cream)}
+.msg{max-width:80%;padding:14px 18px;border-radius:18px;font-size:.98rem;line-height:1.55;opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.msg.show{opacity:1;transform:none}
+.msg.user{margin-left:auto;background:var(--orange);color:var(--cream);border-bottom-right-radius:5px}
+.msg.ai{background:var(--cream-3);color:var(--ink);border-bottom-left-radius:5px}
+.msg.ai .mono{display:block;margin-top:12px;font-size:.74rem;line-height:2;color:var(--brown)}
+.msg.ai .ok{color:var(--orange-deep)}
+
+/* ---------- Étapes (rangées éditoriales microsoft.ai) ---------- */
+.steps{padding:130px 0;background:var(--cream)}
+.steps .head{text-align:center;margin-bottom:30px}
+.steps .head .kicker{justify-content:center;display:inline-flex}
+.steps h2{font-size:clamp(2rem,4.6vw,3.4rem);margin-bottom:12px}
+.steps .head p{max-width:50ch;margin:0 auto}
+.row{
+  display:grid;grid-template-columns:150px 1.2fr 1fr;gap:40px;align-items:center;
+  padding:54px 0;border-bottom:1px solid var(--cream-2);
+}
+.row:last-of-type{border-bottom:none}
+.row .art{width:120px;height:120px;border-radius:24px;position:relative;overflow:hidden}
+.row .art svg{width:100%;height:100%}
+.row .k{font-family:'Red Hat Mono',monospace;font-size:.74rem;color:var(--brown);margin-bottom:12px}
+.row h3{font-size:clamp(1.6rem,3vw,2.3rem);margin-bottom:0;letter-spacing:-.025em}
+.row .desc{font-size:1.02rem;color:var(--brown);max-width:40ch}
+@media(max-width:860px){.row{grid-template-columns:1fr;gap:18px}.row .art{width:90px;height:90px}}
+
+/* ---------- Offre unique ---------- */
+.offer{padding:130px 0;background:var(--cream-2)}
+.offer .head{text-align:center;margin-bottom:54px}
+.offer .head .kicker{justify-content:center;display:inline-flex}
+.offer h2{font-size:clamp(2rem,4.6vw,3.4rem);margin-bottom:12px}
+.offer .head p{max-width:48ch;margin:0 auto}
+.offer-card{
+  max-width:760px;margin:0 auto;background:var(--cream);border-radius:var(--r-card);
+  padding:56px;box-shadow:0 4px 40px rgba(93,82,75,.14);position:relative;overflow:hidden;
+}
+.offer-card::before{content:"";position:absolute;top:-90px;right:-90px;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,var(--orange-tint),transparent 70%)}
+.offer-card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;position:relative}
+.offer-card .name{font-family:'Newsreader',serif;font-size:1.9rem;font-weight:450;color:var(--ink);letter-spacing:-.02em}
+.offer-card .badge{font-family:'Red Hat Mono',monospace;font-size:.68rem;background:var(--orange);color:var(--cream);border-radius:999px;padding:6px 14px}
+.offer-card .price{font-family:'Newsreader',serif;font-size:clamp(3.6rem,7vw,5.2rem);font-weight:450;color:var(--ink);letter-spacing:-.04em;margin:26px 0 4px;position:relative}
+.offer-card .per{font-family:'Red Hat Mono',monospace;font-size:.78rem;color:var(--brown);margin-bottom:34px}
+.offer-card ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;margin-bottom:40px;position:relative}
+.offer-card li{display:flex;gap:12px;align-items:flex-start;font-size:.98rem;color:var(--ink)}
+.offer-card li svg{flex:none;margin-top:6px}
+.offer-card li svg path{stroke:var(--orange)}
+.offer-card .btn{width:100%}
+.offer-card .note{font-family:'Red Hat Mono',monospace;font-size:.68rem;color:var(--brown);text-align:center;margin-top:16px}
+@media(max-width:680px){.offer-card{padding:36px 26px}.offer-card ul{grid-template-columns:1fr}}
+
+/* ---------- Acronyme — condensation au scroll ---------- */
+.acro{height:240vh;position:relative;background:
+  radial-gradient(90% 70% at 50% 120%, rgba(217,119,87,.22) 0%, transparent 60%),
+  var(--ink);}
+.acro .stage{
+  position:sticky;top:0;height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:var(--cream);overflow:hidden;
+}
+.acro .small{font-family:'Red Hat Mono',monospace;font-size:.8rem;letter-spacing:.04em;color:var(--mid);margin-bottom:28px}
+.acro .word-line{font-family:'Newsreader',serif;font-size:clamp(2.6rem,8vw,6.4rem);font-weight:450;letter-spacing:-.04em;line-height:1.05;display:flex;gap:.22em;white-space:nowrap;color:var(--cream)}
+.acro .initial{color:var(--orange);font-style:italic}
+.acro .rest{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom}
+@media(max-width:600px){.acro .word-line{font-size:clamp(1.7rem,9vw,2.6rem)}}
+
+/* ---------- Comment ça se passe (flux direct) ---------- */
+.lead{padding:130px 0;background:var(--cream)}
+.lead h2{font-size:clamp(2rem,4.6vw,3.2rem);margin-bottom:14px}
+.buyflow{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.bf{
+  background:var(--cream-3);border-radius:var(--r-card);padding:38px 32px;
+  transition:transform .3s var(--ease),box-shadow .3s;
+}
+.bf:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(93,82,75,.14)}
+.bf .k{font-family:'Red Hat Mono',monospace;font-size:.72rem;color:var(--orange-deep);margin-bottom:14px}
+.bf h3{font-size:1.35rem;letter-spacing:-.02em;margin-bottom:10px}
+.bf .desc{font-size:.96rem;color:var(--brown)}
+@media(max-width:860px){.buyflow{grid-template-columns:1fr}}
+
+/* ---------- FAQ ---------- */
+.faq{padding:120px 0;background:var(--cream-2)}
+.faq .wrap{max-width:760px;margin:0 auto}
+.faq h2{font-size:clamp(2rem,4.6vw,3rem);margin-bottom:40px}
+details{background:var(--cream);border-radius:18px;margin-bottom:12px;overflow:hidden;transition:box-shadow .25s}
+details[open]{box-shadow:0 4px 30px rgba(93,82,75,.1)}
+summary{
+  cursor:pointer;list-style:none;padding:22px 26px;font-family:'Newsreader',serif;font-weight:500;font-size:1.12rem;color:var(--ink);
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+}
+summary::-webkit-details-marker{display:none}
+summary .x{flex:none;width:14px;height:14px;position:relative}
+summary .x::before,summary .x::after{content:"";position:absolute;background:var(--orange);transition:transform .3s var(--ease)}
+summary .x::before{left:0;top:6px;width:14px;height:2px}
+summary .x::after{left:6px;top:0;width:2px;height:14px}
+details[open] summary .x::after{transform:rotate(90deg)}
+details .a{padding:0 26px 24px;color:var(--brown);font-size:.98rem;max-width:62ch}
+
+/* ---------- CTA final plein écran (plongée au scroll, motif Terminal) ---------- */
+.final{
+  min-height:100svh;display:flex;align-items:center;justify-content:center;
+  padding:120px 0;background:
+    radial-gradient(90% 70% at 50% 120%, rgba(217,119,87,.25) 0%, transparent 60%),
+    var(--ink);
+  color:var(--cream);text-align:center;position:relative;overflow:hidden;
+}
+.final .paths{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.8}
+.final .container{will-change:transform,opacity}
+.final h2{color:var(--cream);font-size:clamp(2.8rem,8.4vw,7rem);font-weight:450;line-height:1.02;letter-spacing:-.04em;max-width:14ch;margin:0 auto 24px;position:relative;z-index:1}
+.final h2 em{font-style:italic;color:var(--orange)}
+.final p{color:rgba(254,249,237,.6);margin-bottom:44px;font-family:'Red Hat Mono',monospace;font-size:.8rem;position:relative;z-index:1}
+.final .btn{position:relative;z-index:1;min-height:54px;padding:0 38px}
+
+/* ---------- Footer (sombre, dans la continuité du finale) ---------- */
+footer{background:var(--ink);color:rgba(254,249,237,.75);padding:70px 0 40px}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:40px;margin-bottom:60px}
+.fgrid .logo{font-family:'Newsreader',serif;font-weight:500;font-size:1.3rem;color:var(--cream);margin-bottom:14px}
+.fgrid .logo i{color:var(--orange);font-style:normal}
+.fgrid .tag{font-size:.95rem;max-width:28ch;color:rgba(254,249,237,.5)}
+.fgrid h4{font-family:'Red Hat Mono',monospace;font-size:.68rem;letter-spacing:.06em;color:rgba(254,249,237,.4);margin-bottom:16px;font-weight:400}
+.fgrid ul{list-style:none;display:grid;gap:10px;font-size:.95rem}
+.fgrid ul a:hover{color:var(--orange)}
+.fgrid .reach p{margin-bottom:6px}
+.fgrid .reach .dim{color:rgba(254,249,237,.4);font-size:.85rem}
+.fbottom{border-top:1px solid rgba(254,249,237,.12);padding-top:24px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-family:'Red Hat Mono',monospace;font-size:.66rem;color:rgba(254,249,237,.4)}
+@media(max-width:860px){.fgrid{grid-template-columns:1fr 1fr}}
+
+/* ---------- Reveal ---------- */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .hero h1 .w,.reveal,.msg{opacity:1!important;transform:none!important}
+  .demo .demo-track{height:auto}
+  .demo .demo-stage{position:static;min-height:0;padding:120px 0}
+  .acro{height:auto}
+  .acro .stage{position:static;height:auto;padding:120px 0}
+}
+</style>
+</head>
+<body>
+
+
+
+<header>
+  <div class="nav">
+    <a class="logo" href="#top">Cyclades<i>AI</i></a>
+    <span class="spacer"></span>
+    <nav>
+      <a href="#demo">Aperçu</a>
+      <a href="#fonctionnement">Le cycle</a>
+      <a href="#offre">Offre</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="cta" href="mailto:victor.delair.cyclades@gmail.com?subject=Mon%20plugin%20COS&body=Mon%20offre%20%3A%0AMa%20cible%20%3A%0AMa%20zone%20%3A">Décrire mon besoin →</a>
+  </div>
+</header>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero" id="top">
+  <div class="container">
+    <p class="kicker" style="justify-content:center;display:inline-flex">cos — claude operating system</p>
+    <h1 id="hero-title">Votre plugin de prospection, <em>taillé pour votre niche.</em></h1>
+    <p class="sub">COS fabrique un plugin Claude Code qui prend en charge toute votre prospection — recherche, cold email, pitch, livrable, relances. Un système sur mesure, à votre niche, qui prospecte pour vous. Prix fixe, sans appel.</p>
+    <div class="hero-cta">
+      <a class="btn btn-orange" href="mailto:victor.delair.cyclades@gmail.com?subject=Mon%20plugin%20COS&body=Mon%20offre%20%3A%0AMa%20cible%20%3A%0AMa%20zone%20%3A">Décrire mon besoin — 1 000 €<span class="arr">→</span></a>
+    </div>
+    <div class="meta">
+      <span>plugin claude code · modèle claude sonnet 5</span>
+      <span>prix fixe 1 000 €</span>
+      <span>sans appel, sans devis</span>
+    </div>
+  </div>
+  <div class="glowline"></div>
+</section>
+
+<!-- ═══════ CHIFFRES ═══════ -->
+<section class="stats">
+  <div class="container">
+    <div class="grid">
+      <div class="stat reveal"><div class="big"><span class="count" data-to="1000">0</span>€</div><div class="lbl">tarif fixe, une seule fois</div></div>
+      <div class="stat reveal"><div class="big"><span class="count" data-to="0">0</span></div><div class="lbl">appel, visio ou devis</div></div>
+      <div class="stat reveal"><div class="big"><span class="count" data-to="1">0</span></div><div class="lbl">plugin sur mesure, pour votre niche</div></div>
+      <div class="stat reveal"><div class="big">∞</div><div class="lbl">prospects suivis, relances J+7/J+14</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ MANIFESTE ═══════ -->
+<section class="manifesto">
+  <div class="container">
+    <p class="reveal">Une agence de prospection facture au mois et garde sa méthode. COS vous livre le plugin : il vit dans votre Claude, prospecte pour vous, et reste <em>à vous.</em></p>
+  </div>
+</section>
+
+<!-- ═══════ DÉMO ═══════ -->
+<section class="demo" id="demo">
+  <div class="demo-track">
+   <div class="demo-stage">
+    <div class="container">
+    <div class="head">
+      <p class="kicker">aperçu</p>
+      <h2>Le plugin en action.</h2>
+      <p>Vous parlez en langage naturel. Le plugin prospecte, écrit, pitche, livre et relance. Vous validez.</p>
+    </div>
+    <div class="panel reveal">
+      <div class="bar"><i></i>claude code — cos · plugin prospection · session live</div>
+      <div class="body" id="chat">
+        <div class="msg user">Lance la prospection sur les 20 cabinets d'avocats de Lyon.</div>
+        <div class="msg ai">Séquence lancée. Voici l'état :
+          <span class="mono"><span class="ok">[ok]</span> 20 fiches prospects créées — email vérifié, sinon « format probable »<br>
+          <span class="ok">[ok]</span> cold emails rédigés et humanisés — prêts à valider<br>
+          <span class="ok">[ok]</span> registre des envois à jour<br>
+          <span>[-&gt;]</span> relances programmées : J+7 et J+14</span>
+        </div>
+        <div class="msg user">Prépare le pitch pour le rendez-vous de jeudi.</div>
+        <div class="msg ai">Pitch prêt, adapté à la fiche du prospect. Livrable généré, mémoire à jour.</div>
+      </div>
+    </div>
+  </div>
+   </div>
+  </div>
+</section>
+
+<!-- ═══════ ÉTAPES ═══════ -->
+<section class="steps" id="fonctionnement">
+  <div class="container">
+    <div class="head">
+      <p class="kicker">le cycle</p>
+      <h2>De la prospection à la livraison.</h2>
+      <p>Un seul plugin couvre toute la chaîne commerciale, avec une mémoire persistante.</p>
+    </div>
+    <div class="row reveal">
+      <div class="art"><svg viewBox="0 0 120 120" fill="none"><rect x="22" y="30" width="76" height="60" rx="12" fill="#F6E3D7"></rect><path d="M60 44v24M48 56l12 12 12-12" stroke="#D97757" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+      <div>
+        <p class="k">étape 01</p>
+        <h3>Prospecte &amp; fiche</h3>
+      </div>
+      <p class="desc">COS identifie vos cibles et crée une fiche par prospect. Jamais d'email ou de téléphone inventé : confirmé, ou signalé comme « format probable ».</p>
+    </div>
+    <div class="row reveal">
+      <div class="art"><svg viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="34" fill="#F6E3D7"></circle><path d="M60 40v8M60 72v8M40 60h8M72 60h8M46 46l6 6M68 68l6 6M74 46l-6 6M52 68l-6 6" stroke="#D97757" stroke-width="3.5" stroke-linecap="round"></path></svg></div>
+      <div>
+        <p class="k">étape 02</p>
+        <h3>Écrit &amp; pitche</h3>
+      </div>
+      <p class="desc">Cold emails rédigés puis humanisés avant envoi, et pitchs adaptés à chaque prospect. Zéro texte robotique.</p>
+    </div>
+    <div class="row reveal">
+      <div class="art"><svg viewBox="0 0 120 120" fill="none"><rect x="26" y="26" width="68" height="68" rx="16" fill="#F6E3D7"></rect><path d="M42 62l12 12 24-28" stroke="#D97757" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+      <div>
+        <p class="k">étape 03</p>
+        <h3>Livre &amp; relance</h3>
+      </div>
+      <p class="desc">Le livrable est généré et livré, le registre des envois tenu à jour, les relances programmées à J+7 et J+14.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ ACRONYME — condensation au scroll ═══════ -->
+<section class="acro" id="acro">
+  <div class="stage">
+    <p class="small" style="font-family: Newsreader; font-size: 30px; color: rgb(235, 233, 226)">c'est ça, le</p>
+    <div class="word-line" id="acroline">
+      <span class="word"><span class="initial">C</span><span class="rest">laude</span></span>
+      <span class="word"><span class="initial">O</span><span class="rest">perating</span></span>
+      <span class="word"><span class="initial">S</span><span class="rest">ystem.</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ COMMENT ÇA SE PASSE ═══════ -->
+<section class="lead" id="achat">
+  <div class="container">
+    <div class="head" style="text-align:center;margin-bottom:54px">
+      <p class="kicker" style="justify-content:center;display:inline-flex">de votre besoin au plugin</p>
+      <h2 style="max-width:none">Décrivez. Recevez. Prospectez.</h2>
+      <p style="max-width:48ch;margin:0 auto">Aucun appel, aucune visio, aucun devis à rallonge. Vous décrivez, COS fabrique, vous prospectez.</p>
+    </div>
+    <div class="buyflow">
+      <div class="bf reveal">
+        <p class="k">01 — vous décrivez</p>
+        <h3>Un brief suffit</h3>
+        <p class="desc">Votre offre, votre cible, votre zone. C'est tout ce dont COS a besoin pour démarrer.</p>
+      </div>
+      <div class="bf reveal">
+        <p class="k">02 — COS fabrique</p>
+        <h3>Votre plugin, sur mesure</h3>
+        <p class="desc">Instancié pour votre niche, testé et affiné jusqu'à l'état fonctionnel.</p>
+      </div>
+      <div class="bf reveal">
+        <p class="k">03 — vous prospectez</p>
+        <h3>Le plugin est à vous</h3>
+        <p class="desc">Il vit dans votre Claude et prend en charge tout le cycle de prospection.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ OFFRE UNIQUE ═══════ -->
+<section class="offer" id="offre">
+  <div class="container">
+    <div class="head">
+      <p class="kicker">offre</p>
+      <h2>Un prix. Tout compris.</h2>
+      <p>Un tarif fixe, annoncé d'avance. Pas de devis, pas de palier, pas d'abonnement.</p>
+    </div>
+    <div class="offer-card reveal">
+      <div class="top">
+        <div class="name">Votre plugin COS</div>
+        <div class="badge">sur mesure</div>
+      </div>
+      <div class="price">1 000 €</div>
+      <div class="per">prix fixe — une seule fois, aucun abonnement</div>
+      <ul>
+        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Plugin Claude Code de prospection, fabriqué pour votre niche</li>
+        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Cycle complet : prospection, cold email, pitch, livrable, livraison</li>
+        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Mémoire persistante : fiches prospects, registre des envois, relances J+7/J+14</li>
+        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Modèle Claude Sonnet 5, épinglé dans le plugin</li>
+        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Tutoriel d'installation pas à pas inclus</li>
+        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>SAV optionnel sur devis</li>
+      </ul>
+      <a class="btn btn-orange" href="mailto:victor.delair.cyclades@gmail.com?subject=Mon%20plugin%20COS&body=Mon%20offre%20%3A%0AMa%20cible%20%3A%0AMa%20zone%20%3A">Décrire mon besoin — 1 000 €<span class="arr">→</span></a>
+      <p class="note">prix fixe · sans appel, sans visio · sans engagement</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FAQ ═══════ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="wrap">
+      <p class="kicker">faq</p>
+      <h2>Questions fréquentes.</h2>
+      <details>
+        <summary>Dois-je savoir coder ou prompter ?<span class="x"></span></summary>
+        <div class="a">Non. Vous décrivez votre activité, COS fabrique le plugin, et vous l'utilisez ensuite en langage naturel. Un tutoriel d'installation pas à pas est inclus.</div>
+      </details>
+      <details>
+        <summary>Comment se passe la commande ?<span class="x"></span></summary>
+        <div class="a">Vous décrivez votre offre, votre cible et votre zone. Aucun appel ni visio. COS fabrique votre plugin sur mesure, puis vous l'installez et vous prospectez.</div>
+      </details>
+      <details>
+        <summary>Que fait le plugin, exactement ?<span class="x"></span></summary>
+        <div class="a">Il couvre tout le cycle de prospection : recherche et fiches prospects, cold emails, pitchs, création du livrable, livraison, puis relances à J+7 et J+14 — le tout avec une mémoire persistante.</div>
+      </details>
+      <details>
+        <summary>Que comprend le prix de 1 000 € ?<span class="x"></span></summary>
+        <div class="a">Tout : la fabrication du plugin sur mesure, le cycle complet, la mémoire persistante et le tutoriel d'installation. Prix fixe, une seule fois, aucun abonnement. SAV optionnel sur devis.</div>
+      </details>
+      <details>
+        <summary>Les emails et chiffres sont-ils fiables ?<span class="x"></span></summary>
+        <div class="a">COS n'invente jamais un email, un téléphone ou une statistique. Une donnée non confirmée est laissée vide ou signalée « format probable », et tout texte sortant est humanisé avant envoi.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CTA FINAL ═══════ -->
+<section class="final">
+  <svg class="paths" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path d="M-50 120 H 320 Q 380 120 380 180 V 420 Q 380 480 440 480 H 1250" fill="none" stroke="rgba(217,119,87,.18)" stroke-width="1.5"></path>
+    <path d="M1250 80 H 880 Q 820 80 820 140 V 300 Q 820 360 760 360 H -50" fill="none" stroke="rgba(254,249,237,.08)" stroke-width="1.5"></path>
+    <path d="M-50 520 H 540 Q 600 520 600 460 V 220" fill="none" stroke="rgba(217,119,87,.1)" stroke-width="1.5"></path>
+    <circle r="3.5" fill="#D97757"><animateMotion dur="9s" repeatCount="indefinite" path="M-50 120 H 320 Q 380 120 380 180 V 420 Q 380 480 440 480 H 1250"></animateMotion></circle>
+    <circle r="2.5" fill="#FEF9ED" opacity=".7"><animateMotion dur="12s" begin="3s" repeatCount="indefinite" path="M1250 80 H 880 Q 820 80 820 140 V 300 Q 820 360 760 360 H -50"></animateMotion></circle>
+    <circle r="3" fill="#D97757" opacity=".8"><animateMotion dur="11s" begin="5s" repeatCount="indefinite" path="M-50 520 H 540 Q 600 520 600 460 V 220"></animateMotion></circle>
+  </svg>
+  <div class="container" id="final-inner">
+    <h2>Votre prospection, industrialisée. <em>Sur mesure.</em></h2>
+    <p>1 000 € tout compris · sans appel · sans engagement</p>
+    <a class="btn btn-orange" href="mailto:victor.delair.cyclades@gmail.com?subject=Mon%20plugin%20COS&body=Mon%20offre%20%3A%0AMa%20cible%20%3A%0AMa%20zone%20%3A">Décrire mon besoin — 1 000 €<span class="arr">→</span></a>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="container">
+    <div class="fgrid">
+      <div>
+        <div class="logo">Cyclades<i>AI</i></div>
+        <p class="tag">COS — Claude Operating System. Votre plugin de prospection sur mesure.</p>
+      </div>
+      <div>
+        <h4>produit</h4>
+        <ul>
+          <li><a href="#demo">Aperçu</a></li>
+          <li><a href="#fonctionnement">Le cycle</a></li>
+          <li><a href="#offre">Offre</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>offre</h4>
+        <ul>
+          <li><a href="#offre">Tarif fixe — 1 000 €</a></li>
+          <li><a href="#offre">Tout compris</a></li>
+          <li><a href="#offre">Sans appel</a></li>
+        </ul>
+      </div>
+      <div class="reach">
+        <h4>support</h4>
+        <p>Une question ?</p>
+        <p><a href="mailto:victor.delair.cyclades@gmail.com">victor.delair.cyclades@gmail.com</a></p>
+        <p class="dim">Réponse sous 24h.</p>
+      </div>
+    </div>
+    <div class="fbottom">
+      <span>© 2026 CycladesAI — tous droits réservés</span>
+      <span>plugin claude code · modèle claude sonnet 5</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Hero : révélation mot à mot (espaces préservés) */
+  if(!reduced){
+    var h = document.getElementById('hero-title');
+    var walk = function(node){
+      Array.prototype.slice.call(node.childNodes).forEach(function(c){
+        if(c.nodeType === 3 && c.textContent.trim()){
+          var frag = document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach(function(tok){
+            if(!tok) return;
+            if(/^\s+$/.test(tok)){ frag.appendChild(document.createTextNode(' ')); return; }
+            var s = document.createElement('span'); s.className = 'w'; s.textContent = tok;
+            frag.appendChild(s);
+          });
+          node.replaceChild(frag, c);
+        } else if(c.nodeType === 1){ walk(c); }
+      });
+    };
+    walk(h);
+    document.querySelectorAll('#hero-title .w').forEach(function(w,i){
+      w.style.transition = 'opacity .6s cubic-bezier(.25,.8,.25,1) '+(150+i*80)+'ms, transform .6s cubic-bezier(.25,.8,.25,1) '+(150+i*80)+'ms';
+      requestAnimationFrame(function(){requestAnimationFrame(function(){
+        w.style.opacity = 1; w.style.transform = 'translateY(0)';
+      })});
+    });
+  }
+
+  /* Reveal doux */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.16});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* Compteurs (format français : 1000 → 1 000) */
+  var cio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var el = e.target, to = parseInt(el.dataset.to,10), t0 = null;
+      cio.unobserve(el);
+      if(reduced){ el.textContent = to.toLocaleString('fr-FR'); return; }
+      var step = function(t){
+        if(!t0) t0 = t;
+        var p = Math.min((t-t0)/900, 1);
+        el.textContent = Math.round(to * (1 - Math.pow(1-p,3))).toLocaleString('fr-FR');
+        if(p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  },{threshold:.6});
+  document.querySelectorAll('.count').forEach(function(el){ cio.observe(el); });
+
+  /* Chat révélé au scroll (un message par palier de défilement) */
+  var chat = document.getElementById('chat');
+  if(chat){
+    var msgs = chat.querySelectorAll('.msg');
+    if(reduced){
+      msgs.forEach(function(m){ m.classList.add('show'); });
+    } else {
+      var track = document.querySelector('.demo .demo-track');
+      var onChat = function(){
+        var r = track.getBoundingClientRect();
+        var total = r.height - innerHeight;
+        var p = Math.min(Math.max(-r.top / total, 0), 1);
+        // les messages se révèlent échelonnés sur le parcours de scroll
+        var prog = Math.min(Math.max((p - .06) / .72, 0), 1);
+        msgs.forEach(function(m,i){ m.classList.toggle('show', prog > (i + .5) / msgs.length); });
+      };
+      addEventListener('scroll', onChat, {passive:true});
+      addEventListener('resize', onChat);
+      onChat();
+    }
+  }
+
+  /* ── Acronyme : "Claude Operating System" se condense en C O S ── */
+  var acro = document.getElementById('acro');
+  if(acro && !reduced){
+    var rests = acro.querySelectorAll('.rest');
+    var measure = function(){
+      rests.forEach(function(r){
+        r.style.maxWidth = 'none'; r.style.opacity = 1;
+        r.dataset.w = Math.ceil(r.getBoundingClientRect().width) + 2;
+      });
+    };
+    measure();
+    var onA = function(){
+      var r = acro.getBoundingClientRect();
+      var total = r.height - innerHeight;
+      var p = Math.min(Math.max(-r.top / total, 0), 1);
+      var q = Math.min(Math.max((p - .25) / .5, 0), 1);
+      var e = 1 - Math.pow(1-q, 3);
+      rests.forEach(function(s){
+        s.style.maxWidth = (parseFloat(s.dataset.w) * (1-e)) + 'px';
+        s.style.opacity = 1 - e;
+      });
+    };
+    addEventListener('scroll', onA, {passive:true});
+    addEventListener('resize', function(){ measure(); onA(); });
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ measure(); onA(); }); }
+    onA();
+  }
+
+  /* ── Finale : plongée au scroll (la section grossit à l'approche) ── */
+  var fin = document.querySelector('.final');
+  var finInner = document.getElementById('final-inner');
+  if(fin && finInner && !reduced){
+    var onFin = function(){
+      var r = fin.getBoundingClientRect();
+      var vh = innerHeight;
+      // p : 0 quand le haut de la section entre, 1 quand elle occupe l'écran
+      var p = Math.min(Math.max((vh - r.top) / (vh * 0.9), 0), 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      finInner.style.transform = 'scale(' + (0.72 + 0.28 * e) + ')';
+      finInner.style.opacity = 0.25 + 0.75 * e;
+    };
+    addEventListener('scroll', onFin, {passive:true});
+    onFin();
+  }
+})();
+</script>
+
+
+</body></html>
