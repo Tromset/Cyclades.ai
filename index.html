@@ -2,8 +2,13 @@
 <html lang="fr"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CycladesAI — CPS | Votre IA de prospection sur mesure</title>
-<meta name="description" content="CPS (Claude Prospecting System) fabrique un plugin sur mesure qui prend en charge toute votre prospection — recherche, cold email, pitch, livrable, relances — pour les indépendants, consultants et prestataires de services qui vivent de nouveaux clients. Prix fixe 1 000 €, sans abonnement.">
+<title>Racket — combien l'État vous prend, vraiment</title>
+<meta name="description" content="Le calculateur de racket étatique : entrez votre salaire brut, il remonte jusqu'au coût employeur, retire chaque cotisation, l'impôt sur le revenu et la TVA de vos achats, et vous donne votre jour de libération fiscale. Barème 2026, calcul 100 % local.">
+<meta property="og:title" content="Racket — combien l'État vous prend, vraiment">
+<meta property="og:description" content="Cotisations, impôt, TVA : toute l'addition, ligne par ligne. Et le jour où vous commencez enfin à travailler pour vous.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.cyclades.ai/">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Red+Hat+Mono:wght@400;500&display=swap">
@@ -13,12 +18,18 @@
   --cream:#FEF9ED;
   --cream-2:#F7ECD9;
   --cream-3:#FBF0DC;
+  --paper:#FFFDF7;
   --ink:#141413;
   --brown:#5D524B;
   --mid:#B0AEA5;
   --orange:#D97757;
   --orange-deep:#C4623F;
   --orange-tint:#F6E3D7;
+  --seg-pat:#C4623F;
+  --seg-sal:#D97757;
+  --seg-ir:#E9A27F;
+  --seg-tva:#F2C7AE;
+  --seg-you:#FEF9ED;
   --r-card:28px;
   --r-pill:999px;
   --ease:cubic-bezier(.25,.8,.25,1);
@@ -34,31 +45,24 @@ body{
   overflow-x:hidden;
 }
 a{color:inherit;text-decoration:none}
+button{font:inherit}
 .mono{font-family:'Red Hat Mono',monospace}
+.num{font-variant-numeric:tabular-nums}
 .container{max-width:1140px;margin:0 auto;padding:0 28px}
 ::selection{background:var(--orange);color:var(--cream)}
-
 h1,h2,h3{font-weight:450;color:var(--ink);letter-spacing:-.03em}
-
-/* ---------- Labels mono (minuscules, espacés) ---------- */
-.kicker{
-  display:none!important;
-}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- Boutons pilule ---------- */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
   min-height:48px;padding:0 30px;border-radius:var(--r-pill);border:none;cursor:pointer;
   font-family:'Red Hat Mono',monospace;font-size:.8rem;letter-spacing:.02em;
-  transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s;
+  transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s,border-color .25s,color .25s;
   touch-action:manipulation;
 }
 .btn-orange{background:var(--orange);color:var(--cream)}
 .btn-orange:hover{background:var(--orange-deep);box-shadow:0 8px 30px rgba(217,119,87,.35)}
-.btn-soft{background:var(--cream-2);color:var(--brown)}
-.btn-soft:hover{background:#F0E2C9}
-.btn-dark{background:var(--ink);color:var(--cream)}
-.btn-dark:hover{background:#2a2a28}
 .btn-line{background:transparent;color:var(--cream);border:1px solid rgba(254,249,237,.4)}
 .btn-line:hover{border-color:var(--orange);color:var(--orange)}
 .btn:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
@@ -88,154 +92,209 @@ header{position:fixed;top:14px;left:0;right:0;z-index:100}
   .nav .cta{font-size:.72rem}
 }
 
-/* ---------- Hero (sombre chaud, serif crème géant) ---------- */
+/* ---------- Hero ---------- */
 .hero{
   position:relative;min-height:96svh;display:flex;align-items:center;justify-content:center;text-align:center;
   background:
     radial-gradient(90% 60% at 50% 110%, rgba(217,119,87,.28) 0%, transparent 60%),
     radial-gradient(120% 80% at 50% -20%, #2E2A26 0%, var(--ink) 60%);
-  color:var(--cream);overflow:hidden;padding:140px 0 110px;
+  color:var(--cream);overflow:hidden;padding:150px 0 110px;
 }
 .hero .glowline{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(720px,90%);height:1px;
   background:linear-gradient(90deg,transparent,rgba(217,119,87,.7),transparent)}
-.hero .kicker{color:var(--mid)}
-.hero .kicker::before{background:var(--orange)}
 .hero h1{
   color:var(--cream);font-size:clamp(3rem,8.4vw,6.6rem);font-weight:450;line-height:1.02;letter-spacing:-.04em;
-  max-width:15ch;margin:0 auto 30px;
+  max-width:14ch;margin:0 auto 30px;
 }
 .hero h1 .w{display:inline-block;opacity:0;transform:translateY(16px)}
 .hero h1 em{font-style:italic;color:var(--orange)}
 .hero .sub{
-  font-size:clamp(1.25rem,2.2vw,1.55rem);color:rgba(254,249,237,.72);max-width:54ch;margin:0 auto 42px;
+  font-size:clamp(1.2rem,2.2vw,1.5rem);color:rgba(254,249,237,.72);max-width:52ch;margin:0 auto 42px;
 }
-.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:60px}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:56px}
+.ticker{
+  display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;
+  font-family:'Red Hat Mono',monospace;font-size:.76rem;color:rgba(254,249,237,.6);
+  border:1px solid rgba(254,249,237,.14);border-radius:var(--r-pill);padding:10px 20px;margin-bottom:28px;
+}
+.ticker .dot{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2.4s ease-in-out infinite}
+.ticker b{color:var(--cream);font-weight:500;font-variant-numeric:tabular-nums;min-width:12ch;text-align:left}
+@keyframes pulse{50%{opacity:.35}}
 .hero .meta{
   font-family:'Red Hat Mono',monospace;font-size:.72rem;letter-spacing:.04em;color:rgba(254,249,237,.45);
   display:flex;gap:26px;justify-content:center;flex-wrap:wrap;
 }
 
-/* ---------- Chiffres ---------- */
-.stats{padding:110px 0 90px;background:var(--cream)}
-.stats .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.stat{
-  background:var(--cream-3);border-radius:var(--r-card);padding:38px 30px;text-align:center;
-  transition:transform .3s var(--ease),box-shadow .3s;
-}
-.stat:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(93,82,75,.14)}
-.stat .big{font-family:'Newsreader',serif;font-size:clamp(2.4rem,4vw,3.4rem);font-weight:450;color:var(--ink);letter-spacing:-.03em}
-.stat .big sup{font-size:.4em;color:var(--orange)}
-.stat .lbl{font-family:'Red Hat Mono',monospace;font-size:.72rem;letter-spacing:.04em;color:var(--brown);margin-top:10px}
-@media(max-width:860px){.stats .grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:520px){.stats .grid{grid-template-columns:1fr}}
+/* ---------- Section heads ---------- */
+.head{text-align:center;margin-bottom:54px}
+.head h2{font-size:clamp(2rem,4.6vw,3.4rem);margin-bottom:12px}
+.head p{max-width:50ch;margin:0 auto}
 
-/* ---------- Manifeste (serif italique, calme) ---------- */
-.manifesto{padding:90px 0 130px;background:var(--cream);text-align:center}
-.manifesto p{
-  font-size:clamp(1.7rem,4.2vw,2.9rem);font-weight:450;line-height:1.25;letter-spacing:-.02em;
-  color:var(--ink);max-width:26ch;margin:0 auto;
-}
-.manifesto em{font-style:italic;color:var(--orange)}
+/* ---------- Calculateur ---------- */
+.calc{padding:130px 0 120px;background:var(--cream)}
+.calc-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px;align-items:start}
+@media(max-width:920px){.calc-grid{grid-template-columns:1fr}}
 
-/* ---------- Démo (carte crème sur fond sombre chaud) ---------- */
-.demo{position:relative;background:linear-gradient(180deg,#1B1916,var(--ink));color:var(--cream)}
-.demo .demo-track{height:185vh;position:relative}
-.demo .demo-stage{position:sticky;top:0;min-height:100svh;display:flex;align-items:center;padding:110px 0}
-.demo .demo-stage .container{width:100%}
-.demo .head{text-align:center;margin-bottom:56px}
-.demo .kicker{color:var(--mid);justify-content:center;display:flex}
-.demo h2{color:var(--cream);font-size:clamp(2rem,4.6vw,3.4rem);margin-bottom:14px}
-.demo .head p{color:rgba(254,249,237,.65);max-width:46ch;margin:0 auto}
-.panel{
-  background:var(--cream);color:var(--brown);border-radius:var(--r-card);max-width:860px;margin:0 auto;
-  box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;
-}
-.panel .bar{
-  display:flex;align-items:center;gap:10px;padding:16px 24px;border-bottom:1px solid var(--cream-2);
-  font-family:'Red Hat Mono',monospace;font-size:.72rem;color:var(--brown);
-}
-.panel .bar i{width:9px;height:9px;border-radius:50%;background:var(--orange);animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{50%{opacity:.35}}
-.panel .body{padding:30px;display:grid;gap:16px;min-height:330px;align-content:start;background:var(--cream)}
-.msg{max-width:80%;padding:14px 18px;border-radius:18px;font-size:.98rem;line-height:1.55;opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
-.msg.show{opacity:1;transform:none}
-.msg.user{margin-left:auto;background:var(--orange);color:var(--cream);border-bottom-right-radius:5px}
-.msg.ai{background:var(--cream-3);color:var(--ink);border-bottom-left-radius:5px}
-.msg.ai .mono{display:block;margin-top:12px;font-size:.74rem;line-height:2;color:var(--brown)}
-.msg.ai .ok{color:var(--orange-deep)}
+.inputs{background:var(--cream-3);border-radius:var(--r-card);padding:40px 36px}
+.field{margin-bottom:34px}
+.field:last-child{margin-bottom:0}
+.flabel{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  font-family:'Red Hat Mono',monospace;font-size:.74rem;color:var(--brown);margin-bottom:12px}
+.hint{font-family:'Red Hat Mono',monospace;font-size:.68rem;color:var(--brown);opacity:.8;margin-top:10px;line-height:1.6}
+.hint[hidden]{display:none}
 
-/* ---------- Étapes (rangées éditoriales microsoft.ai) ---------- */
-.steps{padding:130px 0;background:var(--cream)}
-.steps .head{text-align:center;margin-bottom:30px}
-.steps .head .kicker{justify-content:center;display:inline-flex}
-.steps h2{font-size:clamp(2rem,4.6vw,3.4rem);margin-bottom:12px}
-.steps .head p{max-width:50ch;margin:0 auto}
-.row{
-  display:grid;grid-template-columns:150px 1.2fr 1fr;gap:40px;align-items:center;
-  padding:54px 0;border-bottom:1px solid var(--cream-2);
+.seg{display:inline-flex;background:var(--cream-2);border-radius:var(--r-pill);padding:4px;gap:4px}
+.seg button{
+  border:none;background:transparent;font-family:'Red Hat Mono',monospace;font-size:.76rem;
+  padding:0 16px;min-height:36px;border-radius:var(--r-pill);color:var(--brown);cursor:pointer;
+  transition:background .2s var(--ease),color .2s;
 }
-.row:last-of-type{border-bottom:none}
-.row .art{width:120px;height:120px;border-radius:24px;position:relative;overflow:hidden}
-.row .art svg{width:100%;height:100%}
-.row .k{font-family:'Red Hat Mono',monospace;font-size:.74rem;color:var(--brown);margin-bottom:12px}
-.row h3{font-size:clamp(1.6rem,3vw,2.3rem);margin-bottom:0;letter-spacing:-.025em}
-.row .desc{font-size:1.02rem;color:var(--brown);max-width:40ch}
-@media(max-width:860px){.row{grid-template-columns:1fr;gap:18px}.row .art{width:90px;height:90px}}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-checked="true"]{background:var(--ink);color:var(--cream)}
+.seg button:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 
-/* ---------- Offre unique ---------- */
-.offer{padding:130px 0;background:var(--cream-2)}
-.offer .head{text-align:center;margin-bottom:54px}
-.offer .head .kicker{justify-content:center;display:inline-flex}
-.offer h2{font-size:clamp(2rem,4.6vw,3.4rem);margin-bottom:12px}
-.offer .head p{max-width:48ch;margin:0 auto}
-.offer-card{
-  max-width:760px;margin:0 auto;background:var(--cream);border-radius:var(--r-card);
-  padding:56px;box-shadow:0 4px 40px rgba(93,82,75,.14);position:relative;overflow:hidden;
+.money{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--ink);padding:2px 0 6px;margin-bottom:14px}
+.money input{
+  font-family:'Newsreader',serif;font-size:clamp(2.4rem,5vw,3.4rem);font-weight:450;letter-spacing:-.03em;
+  border:none;background:transparent;color:var(--ink);width:100%;min-width:0;outline:none;
+  font-variant-numeric:tabular-nums;-moz-appearance:textfield;appearance:textfield;
 }
-.offer-card::before{content:"";position:absolute;top:-90px;right:-90px;width:260px;height:260px;border-radius:50%;
-  background:radial-gradient(circle,var(--orange-tint),transparent 70%)}
-.offer-card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;position:relative}
-.offer-card .name{font-family:'Newsreader',serif;font-size:1.9rem;font-weight:450;color:var(--ink);letter-spacing:-.02em}
-.offer-card .badge{font-family:'Red Hat Mono',monospace;font-size:.68rem;background:var(--orange);color:var(--cream);border-radius:999px;padding:6px 14px}
-.offer-card .price{font-family:'Newsreader',serif;font-size:clamp(3.6rem,7vw,5.2rem);font-weight:450;color:var(--ink);letter-spacing:-.04em;margin:26px 0 4px;position:relative}
-.offer-card .per{font-family:'Red Hat Mono',monospace;font-size:.78rem;color:var(--brown);margin-bottom:34px}
-.offer-card ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;margin-bottom:40px;position:relative}
-.offer-card li{display:flex;gap:12px;align-items:flex-start;font-size:.98rem;color:var(--ink)}
-.offer-card li svg{flex:none;margin-top:6px}
-.offer-card li svg path{stroke:var(--orange)}
-.offer-card .btn{width:100%}
-.offer-card .note{font-family:'Red Hat Mono',monospace;font-size:.68rem;color:var(--brown);text-align:center;margin-top:16px}
-@media(max-width:680px){.offer-card{padding:36px 26px}.offer-card ul{grid-template-columns:1fr}}
+.money input::-webkit-outer-spin-button,.money input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.money:focus-within{border-color:var(--orange)}
+.money span{font-family:'Red Hat Mono',monospace;font-size:.78rem;white-space:nowrap;color:var(--brown)}
 
-/* ---------- Acronyme — condensation au scroll ---------- */
-.acro{height:240vh;position:relative;background:
-  radial-gradient(90% 70% at 50% 120%, rgba(217,119,87,.22) 0%, transparent 60%),
-  var(--ink);}
-.acro .stage{
-  position:sticky;top:0;height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  color:var(--cream);overflow:hidden;
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer;--p:50%}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:99px;background:linear-gradient(90deg,var(--orange) var(--p),var(--cream-2) var(--p))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--ink);border:3px solid var(--cream);box-shadow:0 2px 8px rgba(20,20,19,.25);margin-top:-8px}
+input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:var(--cream-2)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:99px;background:var(--orange)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--ink);border:3px solid var(--cream);box-shadow:0 2px 8px rgba(20,20,19,.25)}
+input[type=range]:focus-visible{outline:2px solid var(--orange);outline-offset:4px;border-radius:99px}
+
+.stepper{display:inline-flex;align-items:center;gap:6px;background:var(--cream-2);border-radius:var(--r-pill);padding:4px}
+.stepper button{
+  width:36px;height:36px;border-radius:50%;border:none;background:var(--cream);color:var(--ink);cursor:pointer;
+  font-family:'Red Hat Mono',monospace;font-size:1rem;transition:background .2s,color .2s;
 }
-.acro .small{font-family:'Red Hat Mono',monospace;font-size:.8rem;letter-spacing:.04em;color:var(--mid);margin-bottom:28px}
-.acro .word-line{font-family:'Newsreader',serif;font-size:clamp(2.6rem,8vw,6.4rem);font-weight:450;letter-spacing:-.04em;line-height:1.05;display:flex;gap:.22em;white-space:nowrap;color:var(--cream)}
-.acro .initial{color:var(--orange);font-style:italic}
-.acro .rest{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom}
-@media(max-width:600px){.acro .word-line{font-size:clamp(1.7rem,9vw,2.6rem)}}
+.stepper button:hover{background:var(--ink);color:var(--cream)}
+.stepper button:disabled{opacity:.35;cursor:default;background:var(--cream);color:var(--ink)}
+.stepper button:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.stepper output{min-width:34px;text-align:center;font-family:'Newsreader',serif;font-size:1.4rem;color:var(--ink)}
+.out-pill{font-family:'Red Hat Mono',monospace;font-size:.78rem;color:var(--ink);background:var(--cream-2);border-radius:var(--r-pill);padding:4px 12px}
 
-/* ---------- Comment ça se passe (flux direct) ---------- */
-.lead{padding:130px 0;background:var(--cream)}
-.lead h2{font-size:clamp(2rem,4.6vw,3.2rem);margin-bottom:14px}
-.buyflow{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.bf{
-  background:var(--cream-3);border-radius:var(--r-card);padding:38px 32px;
-  transition:transform .3s var(--ease),box-shadow .3s;
+/* Carte résultat (sombre) */
+.result{
+  position:relative;overflow:hidden;border-radius:var(--r-card);padding:44px 40px 40px;color:var(--cream);
+  background:
+    radial-gradient(80% 60% at 100% 0%, rgba(217,119,87,.22) 0%, transparent 60%),
+    linear-gradient(180deg,#1E1B18,var(--ink));
+  box-shadow:0 30px 80px rgba(20,20,19,.25);
 }
-.bf:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(93,82,75,.14)}
-.bf .k{font-family:'Red Hat Mono',monospace;font-size:.72rem;color:var(--orange-deep);margin-bottom:14px}
-.bf h3{font-size:1.35rem;letter-spacing:-.02em;margin-bottom:10px}
-.bf .desc{font-size:.96rem;color:var(--brown)}
-@media(max-width:860px){.buyflow{grid-template-columns:1fr}}
+.result .lbl{font-family:'Red Hat Mono',monospace;font-size:.74rem;color:rgba(254,249,237,.55);margin-bottom:6px}
+.result .pct{
+  font-family:'Newsreader',serif;font-size:clamp(4.6rem,11vw,7.6rem);font-weight:450;line-height:1;letter-spacing:-.05em;
+  color:var(--orange);font-variant-numeric:tabular-nums;
+}
+.result .pct small{font-size:.42em;letter-spacing:-.02em;margin-left:.08em}
+.result .sentence{font-size:clamp(1.12rem,1.8vw,1.3rem);line-height:1.45;color:rgba(254,249,237,.82);margin:18px 0 30px;max-width:36ch}
+.result .sentence b{color:var(--cream);font-weight:500;white-space:nowrap}
 
-/* ---------- FAQ ---------- */
+.stack{display:flex;gap:3px;height:20px;border-radius:99px;overflow:hidden;margin-bottom:22px}
+.stack span{display:block;height:100%;min-width:0;transition:flex-grow .6s var(--ease)}
+.legend{list-style:none;display:grid;gap:10px;margin-bottom:30px}
+.legend li{display:grid;grid-template-columns:12px 1fr auto auto;gap:12px;align-items:center;font-size:.98rem;color:rgba(254,249,237,.85)}
+.legend i{width:12px;height:12px;border-radius:4px;display:block}
+.legend .v{font-family:'Red Hat Mono',monospace;font-size:.8rem;color:var(--cream);font-variant-numeric:tabular-nums;text-align:right}
+.legend .s{font-family:'Red Hat Mono',monospace;font-size:.7rem;color:rgba(254,249,237,.45);font-variant-numeric:tabular-nums;width:5ch;text-align:right}
+.legend li.you{color:var(--cream);padding-top:10px;border-top:1px solid rgba(254,249,237,.12)}
+
+.free{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.free > div{background:rgba(254,249,237,.06);border:1px solid rgba(254,249,237,.1);border-radius:18px;padding:18px 20px}
+.free .k{font-family:'Red Hat Mono',monospace;font-size:.68rem;color:rgba(254,249,237,.55);margin-bottom:4px}
+.free .big{font-family:'Newsreader',serif;font-size:clamp(1.6rem,3vw,2.1rem);color:var(--cream);letter-spacing:-.02em;line-height:1.15}
+.result .fine{font-family:'Red Hat Mono',monospace;font-size:.68rem;color:rgba(254,249,237,.45);margin-top:18px;line-height:1.7}
+@media(max-width:520px){
+  .inputs{padding:32px 24px}
+  .result{padding:34px 24px 30px}
+  .free{grid-template-columns:1fr}
+  .legend li{font-size:.9rem;gap:10px}
+}
+
+/* ---------- Votre année ---------- */
+.year{
+  padding:130px 0;color:var(--cream);text-align:center;
+  background:
+    radial-gradient(90% 70% at 50% 120%, rgba(217,119,87,.22) 0%, transparent 60%),
+    var(--ink);
+}
+.year h2{color:var(--cream);font-size:clamp(2.2rem,5.6vw,4.4rem);line-height:1.06;letter-spacing:-.04em;max-width:18ch;margin:0 auto 16px}
+.year h2 em,.year h3 em{font-style:italic;color:var(--orange)}
+.year .lead-p{color:rgba(254,249,237,.6);max-width:48ch;margin:0 auto 60px}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;max-width:880px;margin:0 auto 110px}
+.month{display:flex;flex-direction:column;align-items:center;gap:12px}
+.month .bar{position:relative;width:100%;height:clamp(110px,18vw,180px);border-radius:14px;background:rgba(254,249,237,.07);overflow:hidden}
+.month .bar span{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(180deg,var(--orange),var(--orange-deep));transition:height .7s var(--ease)}
+.month .m{font-family:'Red Hat Mono',monospace;font-size:.68rem;color:rgba(254,249,237,.5)}
+.month.free-m .m{color:var(--cream)}
+@media(max-width:600px){.months{gap:5px}.month .bar{border-radius:8px}.month .m{font-size:.58rem}}
+
+.year h3{color:var(--cream);font-size:clamp(1.7rem,3.6vw,2.6rem);letter-spacing:-.03em;margin-bottom:34px}
+.day{max-width:880px;margin:0 auto;text-align:left}
+.day .track{position:relative;height:64px;border-radius:18px;background:rgba(254,249,237,.07);overflow:hidden}
+.day .track span{position:absolute;top:0;bottom:0;left:0;width:0;background:linear-gradient(90deg,var(--orange-deep),var(--orange));transition:width .7s var(--ease)}
+.day .track .who{position:absolute;top:50%;transform:translateY(-50%);font-family:'Red Hat Mono',monospace;font-size:.72rem;z-index:1}
+.day .track .who.st{left:18px;color:var(--cream)}
+.day .track .who.me{right:18px;color:rgba(254,249,237,.7)}
+.day .ticks{display:flex;justify-content:space-between;margin-top:12px;font-family:'Red Hat Mono',monospace;font-size:.68rem;color:rgba(254,249,237,.45)}
+@media(max-width:520px){.day .ticks span:nth-child(even){visibility:hidden}}
+
+/* ---------- Ticket de caisse ---------- */
+.bill{padding:130px 0;background:var(--cream-2)}
+.receipt{
+  position:relative;max-width:500px;margin:0 auto;background:var(--paper);color:var(--ink);
+  font-family:'Red Hat Mono',monospace;font-size:.82rem;line-height:1.5;
+  padding:40px 34px 46px;box-shadow:0 20px 60px rgba(93,82,75,.18);
+  transform:rotate(-.6deg);
+}
+.receipt::after{
+  content:"";position:absolute;left:0;right:0;bottom:-12px;height:12px;
+  background:linear-gradient(-45deg,transparent 8px,var(--paper) 0) 0 0/16px 12px repeat-x,
+             linear-gradient(45deg,transparent 8px,var(--paper) 0) 0 0/16px 12px repeat-x;
+}
+.receipt .rc-head{text-align:center;margin-bottom:22px}
+.receipt .rc-name{font-family:'Newsreader',serif;font-size:1.6rem;letter-spacing:-.02em;line-height:1.1}
+.receipt .rc-name i{color:var(--orange);font-style:normal}
+.receipt .rc-sub{font-size:.7rem;color:var(--brown);margin-top:6px}
+.receipt .rule{border-top:1px dashed var(--mid);margin:14px 0}
+.receipt .rule.double{border-top:3px double var(--ink)}
+.receipt .ln{display:flex;justify-content:space-between;gap:16px;padding:3px 0}
+.receipt .ln span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+.receipt .ln.sub{padding-left:14px;color:var(--brown)}
+.receipt .ln.plus span:last-child{color:var(--orange-deep)}
+.receipt .ln.tot{font-weight:500;font-size:.9rem}
+.receipt .ln.big{font-size:1rem;font-weight:500}
+.receipt .ln.big.st span:last-child{color:var(--orange-deep)}
+.receipt .thanks{text-align:center;color:var(--brown);font-size:.72rem;margin-top:22px;line-height:1.8}
+.receipt .barcode{height:46px;margin:22px auto 0;width:80%;
+  background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 9px,var(--ink) 9px 12px,transparent 12px 14px)}
+@media(max-width:520px){.receipt{padding:32px 20px 40px;font-size:.74rem;transform:none}}
+
+/* ---------- Où va l'argent ---------- */
+.where{padding:130px 0;background:var(--cream)}
+.where .list{max-width:860px;margin:0 auto;display:grid;gap:6px}
+.wrow{display:grid;grid-template-columns:minmax(0,15rem) 1fr 7.5rem;gap:18px;align-items:center;padding:12px 0;border-bottom:1px solid var(--cream-2)}
+.wrow .n{color:var(--ink);font-size:1.02rem;line-height:1.3}
+.wrow .b{height:12px;border-radius:99px;background:var(--cream-2);overflow:hidden}
+.wrow .b span{display:block;height:100%;border-radius:99px;background:var(--orange);transition:width .7s var(--ease)}
+.wrow .v{font-family:'Red Hat Mono',monospace;font-size:.82rem;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+.where .src{font-family:'Red Hat Mono',monospace;font-size:.68rem;color:var(--brown);text-align:center;margin-top:30px}
+.where .src a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:640px){
+  .wrow{grid-template-columns:1fr auto;gap:8px 14px}
+  .wrow .b{grid-column:1 / -1;grid-row:2}
+}
+
+/* ---------- Méthode ---------- */
 .faq{padding:120px 0;background:var(--cream-2)}
 .faq .wrap{max-width:760px;margin:0 auto}
 .faq h2{font-size:clamp(2rem,4.6vw,3rem);margin-bottom:40px}
@@ -246,34 +305,38 @@ summary{
   display:flex;justify-content:space-between;align-items:center;gap:16px;
 }
 summary::-webkit-details-marker{display:none}
+summary:focus-visible{outline:2px solid var(--orange);outline-offset:-2px;border-radius:18px}
 summary .x{flex:none;width:14px;height:14px;position:relative}
 summary .x::before,summary .x::after{content:"";position:absolute;background:var(--orange);transition:transform .3s var(--ease)}
 summary .x::before{left:0;top:6px;width:14px;height:2px}
 summary .x::after{left:6px;top:0;width:2px;height:14px}
 details[open] summary .x::after{transform:rotate(90deg)}
 details .a{padding:0 26px 24px;color:var(--brown);font-size:.98rem;max-width:62ch}
+details .a a{text-decoration:underline;text-underline-offset:3px}
 
-/* ---------- CTA final plein écran (plongée au scroll, motif Terminal) ---------- */
+/* ---------- Final ---------- */
 .final{
-  min-height:100svh;display:flex;align-items:center;justify-content:center;
+  min-height:90svh;display:flex;align-items:center;justify-content:center;
   padding:120px 0;background:
     radial-gradient(90% 70% at 50% 120%, rgba(217,119,87,.25) 0%, transparent 60%),
     var(--ink);
   color:var(--cream);text-align:center;position:relative;overflow:hidden;
 }
 .final .paths{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.8}
-.final .container{will-change:transform,opacity}
-.final h2{color:var(--cream);font-size:clamp(2.8rem,8.4vw,7rem);font-weight:450;line-height:1.02;letter-spacing:-.04em;max-width:14ch;margin:0 auto 24px;position:relative;z-index:1}
+.final .container{position:relative;z-index:1}
+.final h2{color:var(--cream);font-size:clamp(2.8rem,8vw,6.6rem);font-weight:450;line-height:1.02;letter-spacing:-.04em;max-width:14ch;margin:0 auto 24px}
 .final h2 em{font-style:italic;color:var(--orange)}
-.final p{color:rgba(254,249,237,.6);margin-bottom:44px;font-family:'Red Hat Mono',monospace;font-size:.8rem;position:relative;z-index:1}
-.final .btn{position:relative;z-index:1;min-height:54px;padding:0 38px}
+.final p{color:rgba(254,249,237,.6);margin:0 auto 44px;font-family:'Red Hat Mono',monospace;font-size:.8rem;max-width:52ch}
+.final .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.final .btn{min-height:54px;padding:0 34px}
+.toast{display:block;font-family:'Red Hat Mono',monospace;font-size:.74rem;color:var(--orange);margin-top:18px;min-height:1.2em}
 
-/* ---------- Footer (sombre, dans la continuité du finale) ---------- */
+/* ---------- Footer ---------- */
 footer{background:var(--ink);color:rgba(254,249,237,.75);padding:70px 0 40px}
-.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:40px;margin-bottom:60px}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1.2fr 1.2fr;gap:40px;margin-bottom:60px}
 .fgrid .logo{font-family:'Newsreader',serif;font-weight:500;font-size:1.3rem;color:var(--cream);margin-bottom:14px}
 .fgrid .logo i{color:var(--orange);font-style:normal}
-.fgrid .tag{font-size:.95rem;max-width:28ch;color:rgba(254,249,237,.5)}
+.fgrid .tag{font-size:.95rem;max-width:30ch;color:rgba(254,249,237,.5)}
 .fgrid h4{font-family:'Red Hat Mono',monospace;font-size:.68rem;letter-spacing:.06em;color:rgba(254,249,237,.4);margin-bottom:16px;font-weight:400}
 .fgrid ul{list-style:none;display:grid;gap:10px;font-size:.95rem}
 .fgrid ul a:hover{color:var(--orange)}
@@ -282,6 +345,7 @@ footer{background:var(--ink);color:rgba(254,249,237,.75);padding:70px 0 40px}
 .fbottom{border-top:1px solid rgba(254,249,237,.12);padding-top:24px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
   font-family:'Red Hat Mono',monospace;font-size:.66rem;color:rgba(254,249,237,.4)}
 @media(max-width:860px){.fgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.fgrid{grid-template-columns:1fr}}
 
 /* ---------- Reveal ---------- */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
@@ -289,235 +353,212 @@ footer{background:var(--ink);color:rgba(254,249,237,.75);padding:70px 0 40px}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .hero h1 .w,.reveal,.msg{opacity:1!important;transform:none!important}
-  .demo .demo-track{height:auto}
-  .demo .demo-stage{position:static;min-height:0;padding:120px 0}
-  .acro{height:auto}
-  .acro .stage{position:static;height:auto;padding:120px 0}
+  .hero h1 .w,.reveal{opacity:1!important;transform:none!important}
 }
 </style>
 </head>
 <body>
 
-
-
 <header>
   <div class="nav">
-    <a class="logo" href="#top">Cyclades<i>AI</i></a>
+    <a class="logo" href="#top">Racket<i>.</i></a>
     <span class="spacer"></span>
     <nav>
-      <a href="#demo">Aperçu</a>
-      <a href="#fonctionnement">Le cycle</a>
-      <a href="#offre">Offre</a>
-      <a href="#faq">FAQ</a>
+      <a href="#calcul">Calcul</a>
+      <a href="#annee">Votre année</a>
+      <a href="#addition">L'addition</a>
+      <a href="#methode">Méthode</a>
     </nav>
-    <a class="cta" href="mailto:contact@cyclades.ai?subject=Mon%20plugin%20CPS&amp;body=Mon%20offre%20%3A%0AMa%20cible%20%3A%0AMa%20zone%20%3A">contact@cyclades.ai→</a>
+    <a class="cta" href="#calcul">Faire le compte→</a>
   </div>
 </header>
 
 <!-- ═══════ HERO ═══════ -->
 <section class="hero" id="top">
   <div class="container">
-    <p class="kicker" style="justify-content:center;display:inline-flex">cps — claude prospecting system</p>
-    <h1 id="hero-title">Votre IA de prospection, <em>taillée pour votre niche.</em></h1>
-    <p class="sub">Vous vendez un service, mais trouver des clients vous prend un temps fou. CPS fabrique un plugin sur mesure qui prend en charge toute votre prospection — recherche, cold email, pitch, livrable, relances — et la fait tourner à votre place. Prix fixe : 1 000 €.</p>
+    <h1 id="hero-title">Combien l'État vous prend, <em>vraiment.</em></h1>
+    <p class="sub">Votre fiche de paie ne montre qu'une partie de l'addition. Entrez votre brut. On remonte jusqu'à ce que votre travail coûte vraiment, on retire chaque cotisation, l'impôt et la TVA de vos courses. Puis on vous dit à partir de quel jour vous bossez enfin pour vous.</p>
     <div class="hero-cta">
-      <a class="btn btn-orange" href="mailto:contact@cyclades.ai?subject=Mon%20plugin%20CPS&amp;body=Mon%20offre%20%3A%0AMa%20cible%20%3A%0AMa%20zone%20%3A">contact@cyclades.ai<span class="arr">→</span></a>
+      <a class="btn btn-orange" href="#calcul">Calculer mon racket<span class="arr">→</span></a>
+    </div>
+    <div class="ticker" title="Ordre de grandeur : prélèvements obligatoires ≈ 42,8 % du PIB (Insee, 2024), soit environ 1 250 milliards d'euros par an.">
+      <span class="dot" aria-hidden="true"></span>
+      <span>prélevé en France depuis votre arrivée</span>
+      <b id="tick" aria-live="off">0 €</b>
     </div>
     <div class="meta">
-      <span>plugin claude · modèle claude sonnet 5</span>
+      <span>barème 2026 · salarié du privé · calcul 100 % local</span>
     </div>
   </div>
   <div class="glowline"></div>
 </section>
 
-<!-- ═══════ CHIFFRES ═══════ -->
-<section class="stats">
+<!-- ═══════ CALCULATEUR ═══════ -->
+<section class="calc" id="calcul">
   <div class="container">
-    <div class="grid">
-      <div class="stat reveal"><div class="big"><span class="count" data-to="1000">0</span>€</div><div class="lbl">tarif fixe, une seule fois</div></div>
-      <div class="stat reveal"><div class="big"><span class="count" data-to="24">0</span>h</div><div class="lbl">pour une première réponse</div></div>
-      <div class="stat reveal"><div class="big"><span class="count" data-to="1">0</span></div><div class="lbl">plugin sur mesure, pour votre niche</div></div>
-      <div class="stat reveal"><div class="big">∞</div><div class="lbl">prospects suivis, relances J+7/J+14</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ MANIFESTE ═══════ -->
-<section class="manifesto">
-  <div class="container">
-    <p class="reveal">Embaucher un commercial, c'est un salaire chaque mois. Une agence facture au mois et garde sa méthode. CPS vous livre le plugin lui-même : il vit dans votre Claude, prospecte pour vous, et reste <em>à vous.</em></p>
-  </div>
-</section>
-
-<!-- ═══════ DÉMO ═══════ -->
-<section class="demo" id="demo">
-  <div class="demo-track">
-   <div class="demo-stage">
-    <div class="container">
     <div class="head">
-      <p class="kicker">aperçu</p>
-      <h2>Le plugin en action.</h2>
-      <p>Vous parlez en langage naturel — aucun code, aucun prompt à apprendre. Le plugin prospecte, écrit, pitche, livre et relance. Vous validez.</p>
+      <h2>Faites le compte.</h2>
+      <p>Tout se recalcule en direct. Rien ne sort de votre navigateur.</p>
     </div>
-    <div class="panel reveal">
-      <div class="bar"><i></i>claude code — cps · plugin prospection · session live</div>
-      <div class="body" id="chat">
-        <div class="msg user">Lance la prospection sur les 20 cabinets d'avocats de Lyon.</div>
-        <div class="msg ai">Séquence lancée. Voici l'état :
-          <span class="mono"><span class="ok">[ok]</span> 20 fiches prospects créées — email vérifié, sinon « format probable »<br>
-          <span class="ok">[ok]</span> cold emails rédigés et humanisés — prêts à valider<br>
-          <span class="ok">[ok]</span> registre des envois à jour<br>
-          <span>[-&gt;]</span> relances programmées : J+7 et J+14</span>
+
+    <div class="calc-grid">
+      <form class="inputs reveal" id="form" onsubmit="return false" novalidate>
+        <div class="field">
+          <div class="flabel">
+            <label for="brut">Salaire brut</label>
+            <div class="seg" role="radiogroup" aria-label="Période" id="per">
+              <button type="button" role="radio" aria-checked="true" data-v="m">Mensuel</button>
+              <button type="button" role="radio" aria-checked="false" data-v="a">Annuel</button>
+            </div>
+          </div>
+          <div class="money">
+            <input id="brut" type="number" inputmode="numeric" min="0" step="50" value="3000" aria-describedby="brut-hint">
+            <span id="brut-unit">€ brut / mois</span>
+          </div>
+          <input id="brutRange" type="range" min="1000" max="15000" step="50" value="3000" aria-label="Salaire brut (curseur)">
+          <p class="hint" id="brut-hint">Le brut est en haut de votre fiche de paie, avant les cotisations.</p>
         </div>
-        <div class="msg user">Prépare le pitch pour le rendez-vous de jeudi.</div>
-        <div class="msg ai">Pitch prêt, adapté à la fiche du prospect. Livrable généré, mémoire à jour.</div>
+
+        <div class="field">
+          <div class="flabel">
+            <span id="foyer-l">Foyer fiscal</span>
+            <div class="seg" role="radiogroup" aria-labelledby="foyer-l" id="foyer">
+              <button type="button" role="radio" aria-checked="true" data-v="seul">Seul·e</button>
+              <button type="button" role="radio" aria-checked="false" data-v="couple">En couple</button>
+            </div>
+          </div>
+          <p class="hint" id="couple-hint" hidden>En couple, on suppose deux salaires identiques. Les montants restent les vôtres.</p>
+        </div>
+
+        <div class="field">
+          <div class="flabel">
+            <span id="kids-l">Enfants à charge</span>
+            <div class="stepper" role="group" aria-labelledby="kids-l">
+              <button type="button" id="kMinus" aria-label="Un enfant de moins">−</button>
+              <output id="kids" aria-live="polite">0</output>
+              <button type="button" id="kPlus" aria-label="Un enfant de plus">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="flabel">
+            <label for="dep">Part du revenu que vous dépensez</label>
+            <output class="out-pill" id="depOut" for="dep">80 %</output>
+          </div>
+          <input id="dep" type="range" min="0" max="100" step="5" value="80">
+          <p class="hint">Sert à estimer la TVA payée sur vos achats. Le reste est supposé épargné.</p>
+        </div>
+      </form>
+
+      <div class="result reveal" aria-live="polite" aria-atomic="false">
+        <p class="lbl">votre taux de racket</p>
+        <div class="pct"><span id="rTaux">0</span><small>%</small></div>
+        <p class="sentence" id="rSentence">…</p>
+
+        <div class="stack" aria-hidden="true">
+          <span id="sPat" style="background:var(--seg-pat)"></span>
+          <span id="sSal" style="background:var(--seg-sal)"></span>
+          <span id="sIr"  style="background:var(--seg-ir)"></span>
+          <span id="sTva" style="background:var(--seg-tva)"></span>
+          <span id="sYou" style="background:var(--seg-you)"></span>
+        </div>
+        <ul class="legend">
+          <li><i style="background:var(--seg-pat)"></i><span>Cotisations patronales</span><span class="v" id="lPat">–</span><span class="s" id="pPat">–</span></li>
+          <li><i style="background:var(--seg-sal)"></i><span>Cotisations salariales &amp; CSG</span><span class="v" id="lSal">–</span><span class="s" id="pSal">–</span></li>
+          <li><i style="background:var(--seg-ir)"></i><span>Impôt sur le revenu</span><span class="v" id="lIr">–</span><span class="s" id="pIr">–</span></li>
+          <li><i style="background:var(--seg-tva)"></i><span>TVA sur vos achats</span><span class="v" id="lTva">–</span><span class="s" id="pTva">–</span></li>
+          <li class="you"><i style="background:var(--seg-you)"></i><span>Ce qui vous reste</span><span class="v" id="lYou">–</span><span class="s" id="pYou">–</span></li>
+        </ul>
+
+        <div class="free">
+          <div><p class="k">jour de libération fiscale</p><p class="big" id="rDate">–</p></div>
+          <div><p class="k">fin du service pour l'État</p><p class="big" id="rHeure">–</p></div>
+        </div>
+        <p class="fine" id="rFine"></p>
       </div>
     </div>
   </div>
-   </div>
+</section>
+
+<!-- ═══════ VOTRE ANNÉE ═══════ -->
+<section class="year" id="annee">
+  <div class="container">
+    <h2 class="reveal">Vous travaillez pour l'État jusqu'au <em id="yDate">–</em>.</h2>
+    <p class="lead-p reveal">Si tout ce qui part en prélèvements était payé d'abord, voilà le calendrier. Chaque barre, c'est un mois. L'orange, c'est pour lui.</p>
+    <div class="months reveal" id="months" role="img" aria-label="Calendrier des mois travaillés pour l'État"></div>
+
+    <h3 class="reveal">Et chaque jour, jusqu'à <em id="dHeure">–</em>.</h3>
+    <div class="day reveal">
+      <div class="track" role="img" id="dayTrack" aria-label="Journée de 9 h à 17 h">
+        <span id="dFill"></span>
+        <b class="who st">pour l'État</b>
+        <b class="who me">pour vous</b>
+      </div>
+      <div class="ticks" aria-hidden="true">
+        <span>9h</span><span>10h</span><span>11h</span><span>12h</span><span>13h</span><span>14h</span><span>15h</span><span>16h</span><span>17h</span>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ═══════ ÉTAPES ═══════ -->
-<section class="steps" id="fonctionnement">
+<!-- ═══════ L'ADDITION ═══════ -->
+<section class="bill" id="addition">
   <div class="container">
     <div class="head">
-      <p class="kicker">le cycle</p>
-      <h2>De la prospection à la livraison.</h2>
-      <p>Un seul plugin couvre toute la chaîne commerciale, avec une mémoire persistante.</p>
+      <h2>L'addition.</h2>
+      <p>Ligne par ligne, du coût employeur à ce qui reste vraiment dans votre poche.</p>
     </div>
-    <div class="row reveal">
-      <div class="art"><svg viewBox="0 0 120 120" fill="none"><rect x="22" y="30" width="76" height="60" rx="12" fill="#F6E3D7"></rect><path d="M60 44v24M48 56l12 12 12-12" stroke="#D97757" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-      <div>
-        <p class="k">étape 01</p>
-        <h3>Prospecte &amp; fiche</h3>
-      </div>
-      <p class="desc">CPS identifie vos cibles et crée une fiche par prospect. Jamais d'email ou de téléphone inventé : confirmé, ou signalé comme « format probable ».</p>
-    </div>
-    <div class="row reveal">
-      <div class="art"><svg viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="34" fill="#F6E3D7"></circle><path d="M60 40v8M60 72v8M40 60h8M72 60h8M46 46l6 6M68 68l6 6M74 46l-6 6M52 68l-6 6" stroke="#D97757" stroke-width="3.5" stroke-linecap="round"></path></svg></div>
-      <div>
-        <p class="k">étape 02</p>
-        <h3>Écrit &amp; pitche</h3>
-      </div>
-      <p class="desc">Cold emails rédigés puis humanisés avant envoi, et pitchs adaptés à chaque prospect. Zéro texte robotique.</p>
-    </div>
-    <div class="row reveal">
-      <div class="art"><svg viewBox="0 0 120 120" fill="none"><rect x="26" y="26" width="68" height="68" rx="16" fill="#F6E3D7"></rect><path d="M42 62l12 12 24-28" stroke="#D97757" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-      <div>
-        <p class="k">étape 03</p>
-        <h3>Livre &amp; relance</h3>
-      </div>
-      <p class="desc">Le livrable est généré et livré, le registre des envois tenu à jour, les relances programmées à J+7 et J+14.</p>
-    </div>
+    <div class="receipt reveal" id="receipt" aria-live="polite"></div>
   </div>
 </section>
 
-<!-- ═══════ ACRONYME — condensation au scroll ═══════ -->
-<section class="acro" id="acro">
-  <div class="stage">
-    <p class="small" style="font-family: Newsreader; font-size: 30px; color: rgb(235, 233, 226)">c'est ça, le</p>
-    <div class="word-line" id="acroline">
-      <span class="word"><span class="initial">C</span><span class="rest">laude</span></span>
-      <span class="word"><span class="initial">P</span><span class="rest">rospecting</span></span>
-      <span class="word"><span class="initial">S</span><span class="rest">ystem.</span></span>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ COMMENT ÇA SE PASSE ═══════ -->
-<section class="lead" id="achat">
-  <div class="container">
-    <div class="head" style="text-align:center;margin-bottom:54px">
-      <p class="kicker" style="justify-content:center;display:inline-flex">de votre besoin au plugin</p>
-      <h2 style="max-width:none">Décrivez. Recevez. Prospectez.</h2>
-      <p style="max-width:48ch;margin:0 auto">Un processus simple, en contact direct avec vous à chaque étape. Vous décrivez, CPS fabrique, vous prospectez.</p>
-    </div>
-    <div class="buyflow">
-      <div class="bf reveal">
-        <p class="k">01 — vous décrivez</p>
-        <h3>Un brief suffit</h3>
-        <p class="desc">Votre offre, votre cible, votre zone. C'est tout ce dont CPS a besoin pour démarrer.</p>
-      </div>
-      <div class="bf reveal">
-        <p class="k">02 — CPS fabrique</p>
-        <h3>Votre plugin, sur mesure</h3>
-        <p class="desc">Instancié pour votre niche, testé et affiné jusqu'à l'état fonctionnel.</p>
-      </div>
-      <div class="bf reveal">
-        <p class="k">03 — vous prospectez</p>
-        <h3>Le plugin est à vous</h3>
-        <p class="desc">Il vit dans votre Claude et prend en charge tout le cycle de prospection.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ OFFRE UNIQUE ═══════ -->
-<section class="offer" id="offre">
+<!-- ═══════ OÙ VA L'ARGENT ═══════ -->
+<section class="where" id="destination">
   <div class="container">
     <div class="head">
-      <p class="kicker">offre</p>
-      <h2>Un prix. Tout compris.</h2>
-      <p>Un tarif fixe, annoncé d'avance. Pas de devis, pas de palier, pas d'abonnement.</p>
+      <h2>Où part l'argent.</h2>
+      <p>Votre total, ventilé selon la grille de Bercy pour 1 000 € de dépense publique. Au moins, vous savez ce que vous financez.</p>
     </div>
-    <div class="offer-card reveal">
-      <div class="top">
-        <div class="name">Votre plugin CPS</div>
-        <div class="badge">sur mesure</div>
-      </div>
-      <div class="price">1 000 €</div>
-      <div class="per">prix fixe — une seule fois, aucun abonnement</div>
-      <ul>
-        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Plugin Claude Code de prospection, fabriqué pour votre niche</li>
-        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Cycle complet : prospection, cold email, pitch, livrable, livraison</li>
-        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Mémoire persistante : fiches prospects, registre des envois, relances J+7/J+14</li>
-        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Modèle Claude Sonnet 5, épinglé dans le plugin</li>
-        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>Tutoriel d'installation pas à pas inclus</li>
-        <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke-width="1.8" stroke-linecap="round"></path></svg>SAV optionnel sur devis</li>
-      </ul>
-      <a class="btn btn-orange" href="mailto:contact@cyclades.ai?subject=Mon%20plugin%20CPS&amp;body=Mon%20offre%20%3A%0AMa%20cible%20%3A%0AMa%20zone%20%3A">contact@cyclades.ai— 1 000 €<span class="arr">→</span></a>
-      <p class="note">prix fixe · accompagnement direct · sans engagement</p>
-    </div>
+    <div class="list reveal" id="where"></div>
+    <p class="src">Source : <a href="https://www.economie.gouv.fr/aqsmi" target="_blank" rel="noopener">economie.gouv.fr, « À quoi servent mes impôts ? »</a> (données 2019). Montants <span id="wPer">mensuels</span>.</p>
   </div>
 </section>
 
-<!-- ═══════ FAQ ═══════ -->
-<section class="faq" id="faq">
+<!-- ═══════ MÉTHODE ═══════ -->
+<section class="faq" id="methode">
   <div class="container">
     <div class="wrap">
-      <p class="kicker">faq</p>
-      <h2>Questions fréquentes.</h2>
+      <h2>Méthode &amp; limites.</h2>
       <details>
-        <summary>C'est fait pour qui ?<span class="x"></span></summary>
-        <div class="a">Pour les indépendants, consultants, agences et prestataires de services qui vivent de nouveaux clients, mais n'ont ni le temps ni l'envie de prospecter tous les jours. Si votre activité repose sur un flux régulier de rendez-vous, CPS s'occupe de le générer — quelle que soit votre niche.</div>
+        <summary>Qu'est-ce qui est compté ?<span class="x"></span></summary>
+        <div class="a">Tout ce qui sépare le coût de votre travail de ce que vous pouvez dépenser : cotisations patronales (après réduction générale), cotisations salariales, CSG et CRDS, impôt sur le revenu, et TVA sur vos achats. Mutuelle, prévoyance, versement mobilité, taxe foncière, taxes sur le carburant, l'énergie ou le tabac ne sont pas inclus. Le vrai total est donc plutôt plus haut.</div>
       </details>
       <details>
-        <summary>Dois-je savoir coder ou prompter ?<span class="x"></span></summary>
-        <div class="a">Non. Vous décrivez votre activité, CPS fabrique le plugin, et vous l'utilisez ensuite en langage naturel. Un tutoriel d'installation pas à pas est inclus.</div>
+        <summary>Pourquoi partir du coût employeur ?<span class="x"></span></summary>
+        <div class="a">Parce que c'est ce que votre travail coûte vraiment à celui qui vous paie. Les cotisations patronales n'apparaissent jamais dans votre net, mais elles sont prélevées sur la valeur que vous produisez. Une bonne partie des études économiques estime qu'à long terme, elles pèsent surtout sur les salaires.</div>
       </details>
       <details>
-        <summary>Comment se passe la commande ?<span class="x"></span></summary>
-        <div class="a">Vous décrivez votre offre, votre cible et votre zone, et nous restons en contact avec vous pour affiner votre besoin. CPS fabrique votre plugin sur mesure, puis vous l'installez et vous prospectez.</div>
+        <summary>Les cotisations, c'est vraiment du racket ?<span class="x"></span></summary>
+        <div class="a">Le mot est volontairement provocateur. Une grosse partie de ce total finance votre retraite, votre assurance maladie et votre chômage : ce sont des droits, pas de l'argent jeté. Le calculateur montre ce qui passe par les caisses publiques, pas ce qui disparaît. À vous de juger si le service vaut le prix.</div>
       </details>
       <details>
-        <summary>Que fait le plugin, exactement ?<span class="x"></span></summary>
-        <div class="a">Il couvre tout le cycle de prospection : recherche et fiches prospects, cold emails, pitchs, création du livrable, livraison, puis relances à J+7 et J+14 — le tout avec une mémoire persistante.</div>
+        <summary>Quelles hypothèses ?<span class="x"></span></summary>
+        <div class="a">Salarié du privé à temps plein, entreprise de 50 salariés ou plus. Cotisations 2026 avec un plafond de la Sécurité sociale à 48 060 €, réduction générale dégressive unique (SMIC de référence 12,02 €/h), taux accident du travail moyen de 2,1 %. Impôt : barème 2026 sur les revenus 2025, abattement de 10 %, quotient familial plafonné, décote. En couple, deux salaires identiques. Parent seul : demi-part supplémentaire. TVA : 10 % en moyenne de vos dépenses TTC, le loyer étant exonéré et l'alimentation à taux réduit.</div>
       </details>
       <details>
-        <summary>Que comprend le prix de 1 000 € ?<span class="x"></span></summary>
-        <div class="a">Tout : la fabrication du plugin sur mesure, le cycle complet, la mémoire persistante et le tutoriel d'installation. Prix fixe, une seule fois, aucun abonnement. SAV optionnel sur devis.</div>
+        <summary>C'est fiable à l'euro près ?<span class="x"></span></summary>
+        <div class="a">Non. C'est une estimation sérieuse, pas une fiche de paie. Convention collective, primes, heures sup, frais réels ou crédits d'impôt peuvent faire bouger le résultat de quelques points. Pour votre cas exact : votre bulletin de paie et le simulateur officiel sur <a href="https://www.impots.gouv.fr" target="_blank" rel="noopener">impots.gouv.fr</a>.</div>
       </details>
       <details>
-        <summary>Les emails et chiffres sont-ils fiables ?<span class="x"></span></summary>
-        <div class="a">CPS n'invente jamais un email, un téléphone ou une statistique. Une donnée non confirmée est laissée vide ou signalée « format probable », et tout texte sortant est humanisé avant envoi.</div>
+        <summary>Mes données partent où ?<span class="x"></span></summary>
+        <div class="a">Nulle part. Tout est calculé dans votre navigateur, rien n'est envoyé ni stocké. Le lien de partage contient seulement vos paramètres.</div>
       </details>
     </div>
   </div>
 </section>
 
-<!-- ═══════ CTA FINAL ═══════ -->
+<!-- ═══════ FINAL ═══════ -->
 <section class="final">
   <svg class="paths" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <path d="M-50 120 H 320 Q 380 120 380 180 V 420 Q 380 480 440 480 H 1250" fill="none" stroke="rgba(217,119,87,.18)" stroke-width="1.5"></path>
@@ -527,10 +568,14 @@ footer{background:var(--ink);color:rgba(254,249,237,.75);padding:70px 0 40px}
     <circle r="2.5" fill="#FEF9ED" opacity=".7"><animateMotion dur="12s" begin="3s" repeatCount="indefinite" path="M1250 80 H 880 Q 820 80 820 140 V 300 Q 820 360 760 360 H -50"></animateMotion></circle>
     <circle r="3" fill="#D97757" opacity=".8"><animateMotion dur="11s" begin="5s" repeatCount="indefinite" path="M-50 520 H 540 Q 600 520 600 460 V 220"></animateMotion></circle>
   </svg>
-  <div class="container" id="final-inner">
-    <h2>Votre prospection, industrialisée. <em>Sur mesure.</em></h2>
-    <p>1 000 € tout compris · sans engagement</p>
-    <a class="btn btn-orange" href="mailto:contact@cyclades.ai?subject=Mon%20plugin%20CPS&amp;body=Mon%20offre%20%3A%0AMa%20cible%20%3A%0AMa%20zone%20%3A">contact@cyclades.ai— 1 000 €<span class="arr">→</span></a>
+  <div class="container">
+    <h2>Vous aussi, vous avez un <em>associé silencieux.</em></h2>
+    <p id="finalP">Il prend sa part chaque mois et ne vient jamais aux réunions.</p>
+    <div class="ctas">
+      <button class="btn btn-orange" type="button" id="share">Partager mon résultat<span class="arr">→</span></button>
+      <button class="btn btn-line" type="button" id="copy">Copier le lien</button>
+    </div>
+    <span class="toast" id="toast" role="status"></span>
   </div>
 </section>
 
@@ -539,36 +584,36 @@ footer{background:var(--ink);color:rgba(254,249,237,.75);padding:70px 0 40px}
   <div class="container">
     <div class="fgrid">
       <div>
-        <div class="logo">Cyclades<i>AI</i></div>
-        <p class="tag">CPS — Claude Prospecting System. Votre plugin de prospection sur mesure.</p>
+        <div class="logo">Racket<i>.</i></div>
+        <p class="tag">Le calculateur qui remonte toute l'addition. Un projet CycladesAI.</p>
       </div>
       <div>
-        <h4>produit</h4>
+        <h4>calculateur</h4>
         <ul>
-          <li><a href="#demo">Aperçu</a></li>
-          <li><a href="#fonctionnement">Le cycle</a></li>
-          <li><a href="#offre">Offre</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#calcul">Calcul</a></li>
+          <li><a href="#annee">Votre année</a></li>
+          <li><a href="#addition">L'addition</a></li>
+          <li><a href="#destination">Où part l'argent</a></li>
         </ul>
       </div>
       <div>
-        <h4>offre</h4>
+        <h4>sources</h4>
         <ul>
-          <li><a href="#offre">Tarif fixe — 1 000 €</a></li>
-          <li><a href="#offre">Tout compris</a></li>
-          <li><a href="#offre">Sans abonnement</a></li>
+          <li><a href="https://www.impots.gouv.fr" target="_blank" rel="noopener">impots.gouv.fr</a></li>
+          <li><a href="https://www.urssaf.fr" target="_blank" rel="noopener">urssaf.fr</a></li>
+          <li><a href="https://www.economie.gouv.fr/aqsmi" target="_blank" rel="noopener">economie.gouv.fr</a></li>
         </ul>
       </div>
       <div class="reach">
-        <h4>support</h4>
-        <p>Une question ?</p>
-        <p><a href="mailto:contact@cyclades.ai">contact@cyclades.ai</a></p>
-        <p class="dim">Réponse sous 24h.</p>
+        <h4>contact</h4>
+        <p>Une erreur, une idée ?</p>
+        <p><a href="mailto:contact@cyclades.ai?subject=Racket">contact@cyclades.ai</a></p>
+        <p class="dim">Estimation indicative. Ne remplace ni votre fiche de paie ni votre avis d'imposition.</p>
       </div>
     </div>
     <div class="fbottom">
-      <span>© 2026 CycladesAI — tous droits réservés</span>
-      <span>plugin claude code · modèle claude sonnet 5</span>
+      <span>© 2026 CycladesAI</span>
+      <span>barème 2026 · calcul local, aucune donnée collectée</span>
     </div>
   </div>
 </footer>
@@ -577,9 +622,375 @@ footer{background:var(--ink);color:rgba(254,249,237,.75);padding:70px 0 40px}
 (function(){
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* Hero : révélation mot à mot (espaces préservés) */
+  /* ════════ Paramètres 2026 ════════ */
+  var PASS = 48060;                 // plafond annuel de la Sécurité sociale
+  var SMIC_A = 12.02 * 1820;        // SMIC annuel de référence pour la RGDU (gelé au 1er janvier 2026)
+  var RG = {tmin:.02, tdelta:.3821, p:1.75, max:.4021}; // réduction générale dégressive unique, FNAL 0,5 %
+  var IR = {
+    lims:[11600, 29579, 84577, 181917, Infinity],
+    rates:[0, .11, .30, .41, .45],
+    qf:1807, qfIso:4262,            // plafonds du quotient familial
+    decote:{seul:[1982, 897], couple:[3277, 1483]},
+    abatMin:509, abatMax:14555
+  };
+  var TVA_EFF = .10;                // TVA moyenne en % des dépenses TTC
+  var PO_SEC = 1.25e12 / (365 * 86400); // prélèvements obligatoires par seconde
+  var BERCY = [                     // pour 1 000 € de dépense publique (economie.gouv.fr, 2019)
+    ['Retraites', 262], ['Santé', 195], ['Éducation', 95],
+    ['Fonctionnement des administrations', 66], ['Culture, recherche, environnement', 66],
+    ['Défense, justice, sécurité', 60], ['Affaires économiques', 58],
+    ['Famille & logement', 56], ['Transports & équipements', 55],
+    ['Chômage', 33], ['Charge de la dette', 28], ['Autre protection sociale', 26]
+  ];
+
+  /* ════════ Calcul ════════ */
+  function bareme(q){
+    var t = 0, prev = 0;
+    for(var i = 0; i < IR.lims.length; i++){
+      if(q > prev) t += (Math.min(q, IR.lims[i]) - prev) * IR.rates[i];
+      prev = IR.lims[i];
+    }
+    return t;
+  }
+
+  function impot(R, couple, kids){
+    var base = couple ? 2 : 1;
+    var extra = kids <= 2 ? kids * .5 : 1 + (kids - 2);
+    var iso = !couple && kids > 0;
+    if(iso) extra += .5;
+    var parts = base + extra;
+    var t0 = bareme(R / base) * base;
+    var t1 = bareme(R / parts) * parts;
+    // parent isolé : la première part enfant est plafonnée à part
+    var cap = iso ? IR.qfIso + (extra - 1) * 2 * IR.qf : extra * 2 * IR.qf;
+    var t = Math.max(t1, t0 - cap);
+    var d = IR.decote[couple ? 'couple' : 'seul'];
+    if(t < d[0]) t = Math.max(0, t - Math.max(0, d[1] - .4525 * t));
+    if(t < 61) t = 0;               // seuil de mise en recouvrement
+    return {tax:t, parts:parts};
+  }
+
+  function compute(b, couple, kids, dep){
+    var t1 = Math.min(b, PASS);
+    var t2 = Math.max(0, Math.min(b, 8 * PASS) - PASS);
+    var p4 = Math.min(b, 4 * PASS);
+    var cet = b > PASS ? 1 : 0;
+
+    // Patronal
+    var pat = {
+      secu: b * (.13 + .0211 + .0525 + .021) + t1 * .0855,            // maladie, vieillesse, famille, AT/MP
+      retr: t1 * .0601 + t2 * .1457 + cet * (t1 + t2) * .0021,         // Agirc-Arrco + CEG + CET
+      chom: p4 * .0425,                                               // chômage + AGS
+      autres: b * (.003 + .005 + .0168 + .00016)                      // CSA, FNAL, formation, dialogue social
+    };
+    var patBrut = pat.secu + pat.retr + pat.chom + pat.autres;
+    var rgdu = 0;
+    if(b > 0 && b < 3 * SMIC_A){
+      var c = RG.tmin + RG.tdelta * Math.pow(.5 * (3 * SMIC_A / b - 1), RG.p);
+      rgdu = Math.min(c, RG.max) * b;
+    }
+    rgdu = Math.min(rgdu, patBrut);
+    var patNet = patBrut - rgdu;
+
+    // Salarial
+    var csgBase = p4 * .9825 + Math.max(0, b - 4 * PASS);
+    var sal = {
+      base: t1 * .069 + b * .004,
+      retr: t1 * .0401 + t2 * .0972 + cet * (t1 + t2) * .0014,
+      csg: csgBase * .097
+    };
+    var salT = sal.base + sal.retr + sal.csg;
+    var net = b - salT;
+
+    // Impôt sur le revenu
+    var netImp = net + csgBase * .029;                                // CSG non déductible + CRDS
+    var abat = Math.min(netImp, Math.max(IR.abatMin, Math.min(IR.abatMax, netImp * .1)));
+    var R = Math.max(0, netImp - abat) * (couple ? 2 : 1);
+    var ir = impot(R, couple, kids);
+    var irMine = ir.tax / (couple ? 2 : 1);
+
+    // TVA
+    var dispo = net - irMine;
+    var tva = Math.max(0, dispo) * dep * TVA_EFF;
+
+    var cost = b + patNet;
+    var etat = patNet + salT + irMine + tva;
+    return {
+      b:b, cost:cost, pat:pat, rgdu:rgdu, patNet:patNet, sal:sal, salT:salT, net:net,
+      ir:irMine, parts:ir.parts, apresIr:dispo, tva:tva, etat:etat, reste:cost - etat,
+      taux: cost > 0 ? etat / cost : 0
+    };
+  }
+
+  /* ════════ Formatage ════════ */
+  var nf0 = new Intl.NumberFormat('fr-FR', {maximumFractionDigits:0});
+  var nf1 = new Intl.NumberFormat('fr-FR', {minimumFractionDigits:1, maximumFractionDigits:1});
+  function eur(v){ return nf0.format(Math.round(v)) + ' €'; }
+  function pct(v){ return nf1.format(v * 100); }
+  var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  var MOIS_C = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+  var DAYS_IN = [31,28,31,30,31,30,31,31,30,31,30,31];
+  function libDate(taux){
+    var d = new Date(2026, 0, 1 + Math.ceil(taux * 365));
+    if(d.getFullYear() > 2026) return '31 décembre';
+    return (d.getDate() === 1 ? '1er' : d.getDate()) + ' ' + MOIS[d.getMonth()];
+  }
+  function libHeure(taux){
+    var m = Math.round(9 * 60 + taux * 8 * 60);
+    return Math.floor(m / 60) + 'h' + String(m % 60).padStart(2, '0');
+  }
+
+  /* ════════ État de l'interface ════════ */
+  var S = {brut:3000, per:'m', couple:false, kids:0, dep:80};
+  var RANGE = {m:[1000, 15000, 50], a:[12000, 180000, 500]};
+
+  var $ = function(id){ return document.getElementById(id); };
+  var brutIn = $('brut'), brutRange = $('brutRange'), depIn = $('dep');
+
+  function readURL(){
+    try{
+      var q = new URLSearchParams(location.search);
+      if(q.get('per') === 'a') S.per = 'a';
+      var b = parseFloat(q.get('brut'));
+      if(b > 0 && b < 1e7) S.brut = b;
+      else if(S.per === 'a') S.brut = 36000;
+      if(q.get('foyer') === 'couple') S.couple = true;
+      var k = parseInt(q.get('enf'), 10);
+      if(k >= 0 && k <= 6) S.kids = k;
+      var d = parseInt(q.get('dep'), 10);
+      if(d >= 0 && d <= 100) S.dep = d;
+      touched = q.has('brut');
+    }catch(e){}
+  }
+  function shareURL(){
+    var q = new URLSearchParams({brut:Math.round(S.brut), per:S.per, foyer:S.couple ? 'couple' : 'seul', enf:S.kids, dep:S.dep});
+    return location.origin + location.pathname + '?' + q.toString();
+  }
+
+  function setSeg(id, v){
+    $(id).querySelectorAll('button').forEach(function(btn){
+      btn.setAttribute('aria-checked', btn.dataset.v === v ? 'true' : 'false');
+    });
+  }
+  function fillRange(el){
+    var p = (el.value - el.min) / (el.max - el.min) * 100;
+    el.style.setProperty('--p', Math.min(100, Math.max(0, p)) + '%');
+  }
+  function syncControls(){
+    var r = RANGE[S.per];
+    brutRange.min = r[0]; brutRange.max = r[1]; brutRange.step = r[2];
+    brutRange.value = Math.min(r[1], Math.max(r[0], S.brut));
+    brutIn.step = r[2];
+    if(document.activeElement !== brutIn) brutIn.value = Math.round(S.brut);
+    $('brut-unit').textContent = S.per === 'm' ? '€ brut / mois' : '€ brut / an';
+    setSeg('per', S.per);
+    setSeg('foyer', S.couple ? 'couple' : 'seul');
+    $('couple-hint').hidden = !S.couple;
+    $('kids').textContent = S.kids;
+    $('kMinus').disabled = S.kids <= 0;
+    $('kPlus').disabled = S.kids >= 6;
+    depIn.value = S.dep;
+    $('depOut').textContent = S.dep + ' %';
+    fillRange(brutRange); fillRange(depIn);
+  }
+
+  /* Animation douce des grands chiffres */
+  var tweens = {};
+  function tween(el, to, fmt){
+    var from = parseFloat(el.dataset.v || 0);
+    el.dataset.v = to;
+    if(reduced || Math.abs(to - from) < 1e-6){ el.textContent = fmt(to); return; }
+    var t0 = null, id = el.id;
+    cancelAnimationFrame(tweens[id]);
+    var step = function(t){
+      if(!t0) t0 = t;
+      var p = Math.min((t - t0) / 450, 1), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(from + (to - from) * e);
+      if(p < 1) tweens[id] = requestAnimationFrame(step);
+    };
+    tweens[id] = requestAnimationFrame(step);
+  }
+
+  /* ════════ Rendu ════════ */
+  var lastText = '', touched = false;
+  function render(){
+    var bA = S.per === 'm' ? S.brut * 12 : S.brut;
+    var div = S.per === 'm' ? 12 : 1;
+    var perLbl = S.per === 'm' ? 'chaque mois' : 'chaque année';
+    var ok = bA >= 1000;
+    var r = compute(ok ? bA : 0, S.couple, S.kids, S.dep / 100);
+    var P = function(v){ return eur(v / div); };
+
+    tween($('rTaux'), ok ? r.taux * 100 : 0, function(v){ return nf1.format(v); });
+    $('rSentence').innerHTML = ok
+      ? 'Votre travail coûte <b>' + P(r.cost) + '</b> ' + perLbl + '. Après cotisations, impôt et TVA, il vous reste <b>' + P(r.reste) + '</b>.'
+      : 'Entrez un salaire brut pour lancer le calcul.';
+
+    var parts = [['Pat', r.patNet], ['Sal', r.salT], ['Ir', r.ir], ['Tva', r.tva], ['You', r.reste]];
+    parts.forEach(function(p){
+      var share = ok && r.cost > 0 ? p[1] / r.cost : 0;
+      $('s' + p[0]).style.flexGrow = Math.max(0, share);
+      $('l' + p[0]).textContent = ok ? P(p[1]) : '–';
+      $('p' + p[0]).textContent = ok ? Math.round(share * 100) + ' %' : '–';
+    });
+
+    var date = ok ? libDate(r.taux) : '–', heure = ok ? libHeure(r.taux) : '–';
+    $('rDate').textContent = date; $('yDate').textContent = date;
+    $('rHeure').textContent = heure; $('dHeure').textContent = heure;
+    $('rFine').textContent = ok
+      ? 'Net avant impôt : ' + P(r.net) + ' · parts fiscales : ' + nf1.format(r.parts).replace(',0', '') + ' · montants ' + (S.per === 'm' ? 'mensuels' : 'annuels')
+      : '';
+
+    renderMonths(ok ? r.taux : 0);
+    $('dFill').style.width = (ok ? r.taux * 100 : 0) + '%';
+    $('dayTrack').setAttribute('aria-label', ok ? 'Sur une journée de 9 h à 17 h, vous travaillez pour l’État jusqu’à ' + heure : 'Journée de 9 h à 17 h');
+    renderReceipt(r, ok, P);
+    renderWhere(r, ok, P);
+    $('wPer').textContent = S.per === 'm' ? 'mensuels' : 'annuels';
+    $('finalP').textContent = ok
+      ? 'Le vôtre prend ' + pct(r.taux) + ' % de la valeur de votre travail et ne vient jamais aux réunions.'
+      : 'Il prend sa part chaque mois et ne vient jamais aux réunions.';
+    lastText = ok
+      ? 'Je bosse pour l’État jusqu’au ' + date + ' : ' + pct(r.taux) + ' % de la valeur de mon travail part en prélèvements. Calcule ton racket :'
+      : 'Combien l’État vous prend, vraiment ?';
+
+    if(touched){ try{ history.replaceState(null, '', ok ? '?' + shareURL().split('?')[1] : location.pathname); }catch(e){} }
+  }
+
+  var monthsEl = $('months');
+  MOIS_C.forEach(function(m){
+    var d = document.createElement('div');
+    d.className = 'month';
+    d.innerHTML = '<div class="bar"><span></span></div><span class="m">' + m + '</span>';
+    monthsEl.appendChild(d);
+  });
+  function renderMonths(taux){
+    var days = taux * 365, acc = 0;
+    monthsEl.querySelectorAll('.month').forEach(function(el, i){
+      var f = Math.min(1, Math.max(0, (days - acc) / DAYS_IN[i]));
+      el.querySelector('.bar span').style.height = (f * 100) + '%';
+      el.classList.toggle('free-m', f < 1);
+      acc += DAYS_IN[i];
+    });
+    monthsEl.setAttribute('aria-label', 'Vous travaillez pour l’État environ ' + nf1.format(taux * 12) + ' mois sur 12');
+  }
+
+  function ln(label, val, cls){
+    return '<div class="ln' + (cls ? ' ' + cls : '') + '"><span>' + label + '</span><span>' + val + '</span></div>';
+  }
+  function renderReceipt(r, ok, P){
+    var el = $('receipt');
+    if(!ok){ el.innerHTML = '<div class="rc-head"><div class="rc-name">Racket<i>.</i></div><div class="rc-sub">en attente d’un salaire</div></div>'; return; }
+    var no = String(Math.round(r.b)).padStart(6, '0').slice(-6);
+    var neg = function(v){ return '−' + P(v); };
+    el.innerHTML =
+      '<div class="rc-head"><div class="rc-name">Racket<i>.</i> &amp; associés</div>' +
+      '<div class="rc-sub">reçu n° 2026-' + no + ' · ' + (S.per === 'm' ? 'mensuel' : 'annuel') + '</div></div>' +
+      ln('Coût total employeur', P(r.cost), 'tot') +
+      ln('Sécurité sociale', neg(r.pat.secu), 'sub') +
+      ln('Retraite complémentaire', neg(r.pat.retr), 'sub') +
+      ln('Chômage &amp; AGS', neg(r.pat.chom), 'sub') +
+      ln('Formation, logement, CSA', neg(r.pat.autres), 'sub') +
+      (r.rgdu > 0 ? ln('Réduction générale', '+' + P(r.rgdu), 'sub plus') : '') +
+      '<div class="rule"></div>' +
+      ln('Salaire brut', P(r.b), 'tot') +
+      ln('Retraite de base', neg(r.sal.base), 'sub') +
+      ln('Retraite complémentaire', neg(r.sal.retr), 'sub') +
+      ln('CSG / CRDS', neg(r.sal.csg), 'sub') +
+      '<div class="rule"></div>' +
+      ln('Net avant impôt', P(r.net), 'tot') +
+      ln('Impôt sur le revenu', neg(r.ir), 'sub') +
+      '<div class="rule"></div>' +
+      ln('Net après impôt', P(r.apresIr), 'tot') +
+      ln('TVA sur vos achats', neg(r.tva), 'sub') +
+      '<div class="rule double"></div>' +
+      ln('Encaissé par l’État', P(r.etat), 'big st') +
+      ln('Ce qui vous reste', P(r.reste), 'big') +
+      '<div class="rule"></div>' +
+      ln('Taux de prélèvement', pct(r.taux) + ' %') +
+      ln('Jour de libération', libDate(r.taux)) +
+      '<p class="thanks">Merci de votre contribution.<br>Ticket non remboursable.</p>' +
+      '<div class="barcode" aria-hidden="true"></div>';
+  }
+
+  var whereEl = $('where');
+  BERCY.forEach(function(row){
+    var d = document.createElement('div');
+    d.className = 'wrow';
+    d.innerHTML = '<span class="n">' + row[0] + '</span><span class="b"><span></span></span><span class="v">–</span>';
+    whereEl.appendChild(d);
+  });
+  function renderWhere(r, ok, P){
+    var max = BERCY[0][1];
+    whereEl.querySelectorAll('.wrow').forEach(function(el, i){
+      el.querySelector('.b span').style.width = (BERCY[i][1] / max * 100) + '%';
+      el.querySelector('.v').textContent = ok ? P(r.etat * BERCY[i][1] / 1000) : '–';
+    });
+  }
+
+  /* ════════ Événements ════════ */
+  $('form').addEventListener('input', function(){ touched = true; }, true);
+  $('form').addEventListener('click', function(){ touched = true; }, true);
+  brutIn.addEventListener('input', function(){
+    var v = parseFloat(brutIn.value);
+    S.brut = v > 0 ? v : 0;
+    syncControls(); render();
+  });
+  brutIn.addEventListener('blur', syncControls);
+  brutRange.addEventListener('input', function(){
+    S.brut = parseFloat(brutRange.value);
+    brutIn.value = S.brut;
+    syncControls(); render();
+  });
+  $('per').addEventListener('click', function(e){
+    var btn = e.target.closest('button'); if(!btn || btn.dataset.v === S.per) return;
+    S.brut = btn.dataset.v === 'a' ? S.brut * 12 : S.brut / 12;
+    S.per = btn.dataset.v;
+    brutIn.value = Math.round(S.brut);
+    syncControls(); render();
+  });
+  $('foyer').addEventListener('click', function(e){
+    var btn = e.target.closest('button'); if(!btn) return;
+    S.couple = btn.dataset.v === 'couple';
+    syncControls(); render();
+  });
+  $('kMinus').addEventListener('click', function(){ if(S.kids > 0){ S.kids--; syncControls(); render(); } });
+  $('kPlus').addEventListener('click', function(){ if(S.kids < 6){ S.kids++; syncControls(); render(); } });
+  depIn.addEventListener('input', function(){ S.dep = parseInt(depIn.value, 10); syncControls(); render(); });
+
+  // Flèches gauche/droite dans les groupes de boutons radio
+  document.querySelectorAll('.seg').forEach(function(g){
+    g.addEventListener('keydown', function(e){
+      if(e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var other = g.querySelector('button[aria-checked="false"]');
+      if(other){ other.click(); other.focus(); e.preventDefault(); }
+    });
+  });
+
+  var toast = $('toast'), toastT;
+  function say(msg){ toast.textContent = msg; clearTimeout(toastT); toastT = setTimeout(function(){ toast.textContent = ''; }, 3200); }
+  function copyLink(){
+    var txt = lastText + ' ' + shareURL();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){ say('Lien copié. À vous de jouer.'); }, function(){ say(shareURL()); });
+    } else say(shareURL());
+  }
+  $('copy').addEventListener('click', copyLink);
+  $('share').addEventListener('click', function(){
+    if(navigator.share){
+      navigator.share({title:'Racket', text:lastText, url:shareURL()}).catch(function(){});
+    } else copyLink();
+  });
+
+  /* ════════ Compteur du hero ════════ */
+  var tick = $('tick'), tStart = performance.now();
+  var drawTick = function(){ tick.textContent = eur((performance.now() - tStart) / 1000 * PO_SEC); };
+  if(reduced) setInterval(drawTick, 1000);
+  else (function loop(){ drawTick(); requestAnimationFrame(loop); })();
+
+  /* ════════ Hero : révélation mot à mot ════════ */
   if(!reduced){
-    var h = document.getElementById('hero-title');
+    var h = $('hero-title');
     var walk = function(node){
       Array.prototype.slice.call(node.childNodes).forEach(function(c){
         if(c.nodeType === 3 && c.textContent.trim()){
@@ -595,106 +1006,24 @@ footer{background:var(--ink);color:rgba(254,249,237,.75);padding:70px 0 40px}
       });
     };
     walk(h);
-    document.querySelectorAll('#hero-title .w').forEach(function(w,i){
-      w.style.transition = 'opacity .6s cubic-bezier(.25,.8,.25,1) '+(150+i*80)+'ms, transform .6s cubic-bezier(.25,.8,.25,1) '+(150+i*80)+'ms';
-      requestAnimationFrame(function(){requestAnimationFrame(function(){
+    document.querySelectorAll('#hero-title .w').forEach(function(w, i){
+      w.style.transition = 'opacity .6s cubic-bezier(.25,.8,.25,1) ' + (150 + i * 80) + 'ms, transform .6s cubic-bezier(.25,.8,.25,1) ' + (150 + i * 80) + 'ms';
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){
         w.style.opacity = 1; w.style.transform = 'translateY(0)';
-      })});
+      }); });
     });
   }
 
-  /* Reveal doux */
+  /* ════════ Reveal doux ════════ */
   var io = new IntersectionObserver(function(es){
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  },{threshold:.16});
+  }, {threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
-  /* Compteurs (format français : 1000 → 1 000) */
-  var cio = new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting) return;
-      var el = e.target, to = parseInt(el.dataset.to,10), t0 = null;
-      cio.unobserve(el);
-      if(reduced){ el.textContent = to.toLocaleString('fr-FR'); return; }
-      var step = function(t){
-        if(!t0) t0 = t;
-        var p = Math.min((t-t0)/900, 1);
-        el.textContent = Math.round(to * (1 - Math.pow(1-p,3))).toLocaleString('fr-FR');
-        if(p < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    });
-  },{threshold:.6});
-  document.querySelectorAll('.count').forEach(function(el){ cio.observe(el); });
-
-  /* Chat révélé au scroll (un message par palier de défilement) */
-  var chat = document.getElementById('chat');
-  if(chat){
-    var msgs = chat.querySelectorAll('.msg');
-    if(reduced){
-      msgs.forEach(function(m){ m.classList.add('show'); });
-    } else {
-      var track = document.querySelector('.demo .demo-track');
-      var onChat = function(){
-        var r = track.getBoundingClientRect();
-        var total = r.height - innerHeight;
-        var p = Math.min(Math.max(-r.top / total, 0), 1);
-        // les messages se révèlent échelonnés sur le parcours de scroll
-        var prog = Math.min(Math.max((p - .06) / .72, 0), 1);
-        msgs.forEach(function(m,i){ m.classList.toggle('show', prog > (i + .5) / msgs.length); });
-      };
-      addEventListener('scroll', onChat, {passive:true});
-      addEventListener('resize', onChat);
-      onChat();
-    }
-  }
-
-  /* ── Acronyme : "Claude Prospecting System" se condense en C P S ── */
-  var acro = document.getElementById('acro');
-  if(acro && !reduced){
-    var rests = acro.querySelectorAll('.rest');
-    var measure = function(){
-      rests.forEach(function(r){
-        r.style.maxWidth = 'none'; r.style.opacity = 1;
-        r.dataset.w = Math.ceil(r.getBoundingClientRect().width) + 2;
-      });
-    };
-    measure();
-    var onA = function(){
-      var r = acro.getBoundingClientRect();
-      var total = r.height - innerHeight;
-      var p = Math.min(Math.max(-r.top / total, 0), 1);
-      var q = Math.min(Math.max((p - .25) / .5, 0), 1);
-      var e = 1 - Math.pow(1-q, 3);
-      rests.forEach(function(s){
-        s.style.maxWidth = (parseFloat(s.dataset.w) * (1-e)) + 'px';
-        s.style.opacity = 1 - e;
-      });
-    };
-    addEventListener('scroll', onA, {passive:true});
-    addEventListener('resize', function(){ measure(); onA(); });
-    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ measure(); onA(); }); }
-    onA();
-  }
-
-  /* ── Finale : plongée au scroll (la section grossit à l'approche) ── */
-  var fin = document.querySelector('.final');
-  var finInner = document.getElementById('final-inner');
-  if(fin && finInner && !reduced){
-    var onFin = function(){
-      var r = fin.getBoundingClientRect();
-      var vh = innerHeight;
-      // p : 0 quand le haut de la section entre, 1 quand elle occupe l'écran
-      var p = Math.min(Math.max((vh - r.top) / (vh * 0.9), 0), 1);
-      var e = 1 - Math.pow(1 - p, 3);
-      finInner.style.transform = 'scale(' + (0.72 + 0.28 * e) + ')';
-      finInner.style.opacity = 0.25 + 0.75 * e;
-    };
-    addEventListener('scroll', onFin, {passive:true});
-    onFin();
-  }
+  readURL();
+  syncControls();
+  render();
 })();
 </script>
-
 
 </body></html>
